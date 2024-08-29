@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // You can switch to SQLite if you prefer
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  role      String   @default("USER") // You can extend this for different roles if needed
+  sessionId Int
+  session   Session? @relation()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id           Int      @id @default(autoincrement())
+  name         String
+  address      String
+  type         String   // e.g., "apartment", "house"
+  units        Int?     // Number of units for large-scale facilities, optional
+  rentalCost   Float
+  tenants      Tenant[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Tenant {
+  id           Int      @id @default(autoincrement())
+  name         String
+  contactInfo  String
+  section      String   // The section they occupy within the property
+  property     Property @relation(fields: [propertyId], references: [id])
+  propertyId   Int
+  payments     Payment[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Payment {
+  id         Int      @id @default(autoincrement())
+  amount     Float
+  datePaid   DateTime
+  settled    Boolean  @default(false)
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  token        String   @unique
+  userId       Int      @unique
+  user         User     @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
