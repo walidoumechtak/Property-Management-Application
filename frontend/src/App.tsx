@@ -1,11 +1,18 @@
-import './App.css';
+import { useState } from 'react'
+import AuthModal from './components/AuthModal'
+import { useGeneralStore } from './stores/generalStore'
+import './App.css'
+
 
 function App() {
+  const isLoginOpen = useGeneralStore((state) => state.isLoginOpen)
   return (
     <div>
-      <h1>Hello World</h1>
+      {
+        isLoginOpen && <AuthModal />
+      }
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
