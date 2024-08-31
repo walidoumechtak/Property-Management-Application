@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3002
 
 # Start Vite server in development mode
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev", "--", "--host"]

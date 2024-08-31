@@ -1,22 +1,19 @@
-// import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useUserStore } from "../stores/userStore";
-// import { GraphQLErrorExtensions } from "graphql";
+import { GraphQLErrorExtensions } from "graphql";
 import { useGeneralStore } from "../stores/generalStore";
-// import { LoginUserMutation } from "../gql/graphql";
+import { LoginUserMutation } from "../gql/graphql";
 import { useState } from "react";
-import Input from "./Input";
-// import { LOGIN_USER } from "../graphql/mutations/Login";
+import Input from "./Inupt";
+import { LOGIN_USER } from "../graphql/mutations/Login";
 
 
 function Login() {
-    // const [loginUser, {data, error, loading}] = useMutation<LoginUserMutation>(LOGIN_USER);
+    const [loginUser, {data, error, loading}] = useMutation<LoginUserMutation>(LOGIN_USER);
     
     const setUser = useUserStore(state => state.setUser);
     const setLoginIsOpen = useGeneralStore(state => state.setLoginIsOpen);
-    const [errors, setErrors] = useState<{email: string, password: string}>({
-        email: "",
-        password: "",
-    });
+    const [errors, setErrors] = useState<GraphQLErrorExtensions>({});
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -24,26 +21,23 @@ function Login() {
     const [invalidCredentials, setInvalidCredentials] = useState("");
 
     const handleLogin = async () => {
-        setErrors({
-            email: "",
-            password: "",
-        });
+        setErrors({});
 
-        // try{
-        //     const response = await loginUser({
-        //         variables: {
-        //             email: loginData.email,
-        //             password: loginData.password,
-        //     }});
-        //     response && response.data && setUser(response.data.login.user);
-        //     setLoginIsOpen(false);
-        //     setInvalidCredentials("");
-        // }catch(_) {
-        //     if (error && error.graphQLErrors[0].extensions?.invalidCredentials)
-        //         setInvalidCredentials(error.graphQLErrors[0].extensions.invalidCredentials);
-        //     else if (error)
-        //         setErrors(error.graphQLErrors[0]);
-        // }
+        try{
+            const response = await loginUser({
+                variables: {
+                    email: loginData.email,
+                    password: loginData.password,
+            }});
+            response && response.data && setUser(response.data.login.user);
+            setLoginIsOpen(false);
+            setInvalidCredentials("");
+        }catch(_) {
+            if (error && error.graphQLErrors[0].extensions?.invalidCredentials)
+                setInvalidCredentials(error.graphQLErrors[0].extensions.invalidCredentials);
+            else if (error)
+                setErrors(error.graphQLErrors[0]);
+        }
     }
     return (
         <>

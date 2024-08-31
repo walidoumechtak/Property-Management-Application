@@ -1,27 +1,21 @@
-// import { REGISTER_USER } from "../graphql/mutations/Register";
-// import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "../graphql/mutations/Register";
+import { useMutation } from "@apollo/client";
 import { useUserStore } from "../stores/userStore";
-// import { GraphQLErrorExtensions } from "graphql";
+import { GraphQLErrorExtensions } from "graphql";
 import { useGeneralStore } from "../stores/generalStore";
-// import { RegisterUserMutation, RegisterUserMutationVariables } from "../gql/graphql";
+import { RegisterUserMutation, RegisterUserMutationVariables } from "../gql/graphql";
 import { useState } from "react";
 import { BsPass } from "react-icons/bs";
-import Input from "./Input";
-// import Input from "./Inupt";
+import Input from "./Inupt";
 
 
 function Register() {
-    // const [registerUser, {data, error, loading}] = useMutation<RegisterUserMutation,
-    // RegisterUserMutationVariables>(REGISTER_USER);
+    const [registerUser, {data, error, loading}] = useMutation<RegisterUserMutation,
+    RegisterUserMutationVariables>(REGISTER_USER);
     
     const setUser = useUserStore(state => state.setUser);
     const setLoginIsOpen = useGeneralStore(state => state.setLoginIsOpen);
-    const [errors, setErrors] = useState<{ email: string, password: string, confirmPassword: string, fullName: string }>({
-        email: "",
-        password: "",
-        confirmPassword: "",
-        fullName: "",
-    });
+    const [errors, setErrors] = useState<GraphQLErrorExtensions>({});
     const [registerData, setRegisterData] = useState({
         email: "",
         password: "",
@@ -30,30 +24,25 @@ function Register() {
     });
 
     const handleRegister = async () => {
-        setErrors({
-            email: "",
-            password: "",
-            confirmPassword: "",
-            fullName: "",
-        });
-        // await registerUser({
-        //     variables: {
-        //         email: registerData.email,
-        //         password: registerData.password,
-        //         fullName: registerData.fullName,
-        //         confirmPassword: registerData.confirmPassword,
-        //     }
-        // }).catch(err => {
-        //     setErrors(err.graphQLErrors[0].extensions);
-        // })
-        // if (data?.register.user) {
-        //     setUser({
-        //         id: data.register.user.id,
-        //         fullName: data.register.user.fullName,
-        //         email: data.register.user.email,
-        //     });
-        //     setLoginIsOpen(false); // we didn't open the login modal yet.
-        // }
+        setErrors({});
+        await registerUser({
+            variables: {
+                email: registerData.email,
+                password: registerData.password,
+                fullName: registerData.fullName,
+                confirmPassword: registerData.confirmPassword,
+            }
+        }).catch(err => {
+            setErrors(err.graphQLErrors[0].extensions);
+        })
+        if (data?.register.user) {
+            setUser({
+                id: data.register.user.id,
+                fullName: data.register.user.fullName,
+                email: data.register.user.email,
+            });
+            setLoginIsOpen(false); // we didn't open the login modal yet.
+        }
     }
     return (
         <>
@@ -64,7 +53,6 @@ function Register() {
                     InputType="text"
                     max={64}
                     error={errors?.fullName as string}
-                    // error="Full Name is required"
                     onChange={(e) => setRegisterData({...registerData, fullName: e.target.value})}
                     autoFocus={true}
                 />
@@ -75,7 +63,6 @@ function Register() {
                     InputType="email"
                     max={64}
                     error={errors?.email as string}
-                    // error="Email is required"
                     onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
                     autoFocus={false}
                 />

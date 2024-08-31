@@ -1,63 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "postgresql" // You can switch to SQLite if you prefer
+  provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  role      String   @default("USER") // You can extend this for different roles if needed
-  sessionId Int
-  session   Session? @relation()
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Property {
   id           Int      @id @default(autoincrement())
   name         String
   address      String
-  type         String   // e.g., "apartment", "house"
-  units        Int?     // Number of units for large-scale facilities, optional
-  rentalCost   Float
-  tenants      Tenant[]
+  type         String   // e.g., apartment, house
+  numberOfUnits Int     // Number of units in the property
+  rentalCost   Float    // Rental cost for the property
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  tenants      Tenant[] // Relationship to Tenant
 }
 
 model Tenant {
   id           Int      @id @default(autoincrement())
-  name         String
+  fullName     String
   contactInfo  String
-  section      String   // The section they occupy within the property
-  property     Property @relation(fields: [propertyId], references: [id])
+  section      String   // Section or unit the tenant occupies
   propertyId   Int
-  payments     Payment[]
+  property     Property @relation(fields: [propertyId], references: [id])
+  payments     Payment[] // Relationship to Payment
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
 model Payment {
-  id         Int      @id @default(autoincrement())
-  amount     Float
-  datePaid   DateTime
-  settled    Boolean  @default(false)
-  tenant     Tenant   @relation(fields: [tenantId], references: [id])
-  tenantId   Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  amount       Float    // Payment amount
+  datePaid     DateTime
+  isSettled    Boolean  // Indicates whether the payment has been settled
+  tenantId     Int
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
-model Session {
+model User {
   id           Int      @id @default(autoincrement())
-  token        String   @unique
-  userId       Int      @unique
-  user         User     @relation(fields: [userId], references: [id])
+  fullName     String
+  email        String   @unique
+  image        String?
+  password     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

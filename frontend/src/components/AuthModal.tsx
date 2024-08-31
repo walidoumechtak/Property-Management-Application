@@ -3,7 +3,7 @@ import { useGeneralStore } from "../stores/generalStore";
 import { ImCross } from "react-icons/im";
 import Login from "./Login";
 import Register from "./Register";
-    
+
 function AuthModal() {
     const [isRegistered, setIsRegistered] = useState(false);
     const setLoginIsOpen = useGeneralStore((state) => state.setLoginIsOpen);
