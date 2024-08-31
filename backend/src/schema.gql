@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreatePropertieDto {
+  address: String!
+  name: String!
+  numberOfUnits: Float!
+  rentalCost: Float!
+  type: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -23,10 +31,22 @@ type LoginResponse {
 }
 
 type Mutation {
+  createPropertie(propertieDto: CreatePropertieDto!, userId: Float!): Propertie!
   login(loginInput: LoginDto!): LoginResponse!
   logout: String!
   refreshToken: String!
   register(registerInput: RegisterDto!): RegisterResponse!
+}
+
+type Propertie {
+  address: String!
+  createdAt: DateTime!
+  id: Float!
+  name: String!
+  numberOfUnits: Float!
+  rentalCost: Float!
+  type: String!
+  updatedAt: DateTime!
 }
 
 type Query {

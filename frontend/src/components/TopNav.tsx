@@ -23,9 +23,6 @@ function TopNav() {
     const user = useUserStore((state) => state);
     const setUser = useUserStore((state) => state.setUser);
     const [logoutUser] = useMutation<LogoutUserMutation>(LOGOUT_USER);
-    const getUrl = () => {
-        return window.location.pathname
-    }
     const [showMenu, setShowMenu] = useState(false);
     const handleLogout = async () => {
         try{
@@ -45,15 +42,13 @@ function TopNav() {
     
     return (
         <div id="TopNav" className="bg-white fixed z-30 flex items-center w-full border-b h-[61px]">
-            <div className={[ getUrl() === "/" ? "max-w-[1150px]" : "",
-                "flex items-center justify-between w-full px-6 mx-auto",
-            ].join(" ")}>
-                <div className={getUrl() === "/" ? "w-[80%]" : "lg:w-[20%] w-[70%]"}>
+            <div className={"max-w-[1150px] flex items-center justify-between w-full px-6 mx-auto"}>
+                <div className={"w-[80%]"}>
                     <Link to="/">
                     <img
                         src={propertyLogo}
-                        width={getUrl() === "/" ? "100" : "50"}
-                        height={getUrl() === "/" ? "100" : "50"}
+                        width={"100"}
+                        height={"100"}
                         alt="logo"
                     />
                     </Link>
@@ -96,8 +91,6 @@ function TopNav() {
                         <div className={[showMenu ? 'absolute' : 'hidden',
                             'bg-white rounded-lg w-[200px] shadow-xl border top-[46px] -right-2'
                         ].join(" ")}>
-                        {/* <div className="absolute bg-white rounded-lg w-[200px] shadow-xl
-                            border top-[46px] -right-2"> */}
                             <Link
                                 to={`/profile/${user.id}`}
                                 onClick={() => setShowMenu(!showMenu)}

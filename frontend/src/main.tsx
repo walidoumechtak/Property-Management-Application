@@ -8,6 +8,7 @@ import { ApolloProvider } from "@apollo/client"
 import { client } from './utils/apolloClient.ts'
 import React from 'react'
 import Home from './pages/Home.tsx'
+import Proporties from './pages/Proporties.tsx'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,12 @@ const router = createBrowserRouter([
   {
     path: '/profile/:id',
     element:  <Profile />
+  },
+  {
+    path: '/properties',
+    element:  <ProtectedRoutes>
+                <Proporties />
+              </ProtectedRoutes>
   }
 ]);
 

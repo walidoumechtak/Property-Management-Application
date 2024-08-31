@@ -14,6 +14,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  image        String?
+  password     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  properties   Property[] // Relationship to Property
+}
+
 model Property {
   id           Int      @id @default(autoincrement())
   name         String
@@ -24,6 +35,8 @@ model Property {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   tenants      Tenant[] // Relationship to Tenant
+  userId       Int
+  user         User    @relation(fields: [userId], references: [id])
 }
 
 model Tenant {
@@ -49,12 +62,4 @@ model Payment {
   updatedAt    DateTime @updatedAt
 }
 
-model User {
-  id           Int      @id @default(autoincrement())
-  fullName     String
-  email        String   @unique
-  image        String?
-  password     String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
+

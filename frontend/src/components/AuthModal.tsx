@@ -8,7 +8,7 @@ function AuthModal() {
     const [isRegistered, setIsRegistered] = useState(false);
     const setLoginIsOpen = useGeneralStore((state) => state.setLoginIsOpen);
     const isLoginOpen = useGeneralStore((state) => state.isLoginOpen);
-
+    
     return (
         <div
             id="AuthModal"
