@@ -50,6 +50,8 @@ type Propertie {
 }
 
 type Query {
+  getPropertie(id: Float!): Propertie!
+  getProperties(userId: Float!): [Propertie!]!
   getUsers: [User!]!
   hello: String!
 }

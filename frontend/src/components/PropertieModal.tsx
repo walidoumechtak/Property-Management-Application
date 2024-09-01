@@ -3,11 +3,17 @@ import { ImCross } from "react-icons/im";
 import Input from "./Inupt";
 import { useState } from "react";
 import { GraphQLErrorExtensions } from "graphql";
+import { CreatePropertieMutation } from "../gql/graphql";
+import { CREATE_PROPERTIE } from "../graphql/mutations/CreatePropertie";
+import { useMutation } from "@apollo/client";
+import { useUserStore } from "../stores/userStore";
+import { useNavigate } from "react-router-dom";
 
 function PropertieModal() {
     const setIsPropertyModalOpen = useGeneralStore((state) => state.setIsPropertyModalOpen);
     const isPropertyModalOpen = useGeneralStore((state) => state.isPropertyModalOpen);
     const [errors, setErrors] = useState<GraphQLErrorExtensions>({});
+    const [addPropertie, {data, error, loading}] = useMutation<CreatePropertieMutation>(CREATE_PROPERTIE);
     const [addPropertieData, setAddPropertieData] = useState({
         name: "",
         address: "",
@@ -15,9 +21,31 @@ function PropertieModal() {
         numberOfUnits: 0,
         rentalCost: 0
     });
+    const user = useUserStore();
+    const navigate = useNavigate();
 
-    const handleAddPropertie = () => {
-        //
+    const handleAddPropertie = async () => {
+        setErrors({});
+        const property = await addPropertie({
+            variables: {
+                name: addPropertieData.name,
+                address: addPropertieData.address,
+                type: addPropertieData.type,
+                numberOfUnits: addPropertieData.numberOfUnits,
+                rentalCost: addPropertieData.rentalCost,
+                userId: user.id,
+            },
+            refetchQueries: ["GetProperties"],
+            onCompleted: () => {
+                console.log("Propertie added: --->", data);
+            },
+        }).catch(err => {
+            setErrors(err.graphQLErrors[0].extensions);
+        })
+        if (property) {
+            setIsPropertyModalOpen(!isPropertyModalOpen);
+            console.log("Isproperty Modal open:" ,isPropertyModalOpen)
+        }
     }
     
     return (
@@ -59,6 +87,16 @@ function PropertieModal() {
             </div>
             <div className="px-6 pb-6">
                 <Input 
+                    placeHolder="Type (e.g. Apartment, House)"
+                    InputType="text"
+                    max={64}
+                    error={errors?.type as string}
+                    onChange={(e) => setAddPropertieData({...addPropertieData, type: e.target.value})}
+                    autoFocus={false}
+                />
+            </div>
+            <div className="px-6 pb-6">
+                <Input 
                     placeHolder="Number of Units"
                     InputType="number"
                     max={64}
@@ -83,8 +121,8 @@ function PropertieModal() {
                         !addPropertieData.name ||
                         !addPropertieData.address ||
                         !addPropertieData.type ||
-                        !addPropertieData.numberOfUnits ||
-                        !addPropertieData.rentalCost
+                        addPropertieData.numberOfUnits === 0 ||
+                        addPropertieData.rentalCost === 0
                     }
                     onClick={handleAddPropertie}
                     className={[

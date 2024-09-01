@@ -31,7 +31,28 @@ export class PropertieService {
                 },
             },
         });
-
+        console.log("Created Propertie: --->", createdPropertie);
         return createdPropertie;
+    }
+
+
+    //  get properties from database =========================
+    async getProperties(userId: number) {
+        console.log("User ID: --->", userId);
+        const data = this.prisma.property.findMany({
+            where: {
+                userId,
+            }
+        })
+        return data;
+    }
+
+    async getPropertie(id: number) {
+        const propertie = this.prisma.property.findUnique({
+            where: {
+                id,
+            },
+        });
+        return propertie;
     }
 }

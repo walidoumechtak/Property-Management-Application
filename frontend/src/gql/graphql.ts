@@ -19,21 +19,20 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: { input: any; output: any; }
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: { input: any; output: any; }
+};
+
+export type CreatePropertieDto = {
+  address: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  numberOfUnits: Scalars['Float']['input'];
+  rentalCost: Scalars['Float']['input'];
+  type: Scalars['String']['input'];
 };
 
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
   message: Scalars['String']['output'];
-};
-
-export type LikeType = {
-  __typename?: 'LikeType';
-  id: Scalars['Int']['output'];
-  postId: Scalars['Int']['output'];
-  userId: Scalars['Int']['output'];
 };
 
 export type LoginDto = {
@@ -49,8 +48,7 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createPost: PostType;
-  deletePost: PostType;
+  createPropertie: Propertie;
   login: LoginResponse;
   logout: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
@@ -58,14 +56,9 @@ export type Mutation = {
 };
 
 
-export type MutationCreatePostArgs = {
-  text: Scalars['String']['input'];
-  video: Scalars['Upload']['input'];
-};
-
-
-export type MutationDeletePostArgs = {
-  id: Scalars['Float']['input'];
+export type MutationCreatePropertieArgs = {
+  propertieDto: CreatePropertieDto;
+  userId: Scalars['Float']['input'];
 };
 
 
@@ -78,44 +71,34 @@ export type MutationRegisterArgs = {
   registerInput: RegisterDto;
 };
 
-export type PostDetails = {
-  __typename?: 'PostDetails';
+export type Propertie = {
+  __typename?: 'Propertie';
+  address: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
-  id: Scalars['Int']['output'];
-  likes?: Maybe<Array<LikeType>>;
-  otherPostIds?: Maybe<Array<Scalars['Float']['output']>>;
-  text: Scalars['String']['output'];
-  user: User;
-  video: Scalars['String']['output'];
-};
-
-export type PostType = {
-  __typename?: 'PostType';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['Int']['output'];
-  likes?: Maybe<Array<LikeType>>;
-  text: Scalars['String']['output'];
-  user: User;
-  video: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  numberOfUnits: Scalars['Float']['output'];
+  rentalCost: Scalars['Float']['output'];
+  type: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  getPostById: PostDetails;
-  getPosts: Array<PostType>;
+  getPropertie: Propertie;
+  getProperties: Array<Propertie>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
 };
 
 
-export type QueryGetPostByIdArgs = {
+export type QueryGetPropertieArgs = {
   id: Scalars['Float']['input'];
 };
 
 
-export type QueryGetPostsArgs = {
-  skip?: Scalars['Int']['input'];
-  take?: Scalars['Int']['input'];
+export type QueryGetPropertiesArgs = {
+  userId: Scalars['Float']['input'];
 };
 
 export type RegisterDto = {
@@ -143,13 +126,17 @@ export type User = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type CreatePostMutationVariables = Exact<{
-  text: Scalars['String']['input'];
-  video: Scalars['Upload']['input'];
+export type CreatePropertieMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  address: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+  numberOfUnits: Scalars['Float']['input'];
+  rentalCost: Scalars['Float']['input'];
+  userId: Scalars['Float']['input'];
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostType', id: number, text: string, video: string } };
+export type CreatePropertieMutation = { __typename?: 'Mutation', createPropertie: { __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number } };
 
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -174,16 +161,32 @@ export type RegisterUserMutationVariables = Exact<{
 
 export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, email: string, fullName: string } | null } };
 
+export type GetPropertieQueryVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type GetPropertieQuery = { __typename?: 'Query', getPropertie: { __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number } };
+
+export type GetPropertiesQueryVariables = Exact<{
+  userId: Scalars['Float']['input'];
+}>;
+
+
+export type GetPropertiesQuery = { __typename?: 'Query', getProperties: Array<{ __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number, createdAt: any, updatedAt: any }> };
+
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullName: string, email: string, image?: string | null }> };
 
 
-export const CreatePostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreatePost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"text"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"video"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Upload"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createPost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"text"},"value":{"kind":"Variable","name":{"kind":"Name","value":"text"}}},{"kind":"Argument","name":{"kind":"Name","value":"video"},"value":{"kind":"Variable","name":{"kind":"Name","value":"video"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"video"}}]}}]}}]} as unknown as DocumentNode<CreatePostMutation, CreatePostMutationVariables>;
+export const CreatePropertieDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreatePropertie"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"address"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"numberOfUnits"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"rentalCost"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createPropertie"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"propertieDto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"address"},"value":{"kind":"Variable","name":{"kind":"Name","value":"address"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"numberOfUnits"},"value":{"kind":"Variable","name":{"kind":"Name","value":"numberOfUnits"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"rentalCost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"rentalCost"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}}]}}]}}]} as unknown as DocumentNode<CreatePropertieMutation, CreatePropertieMutationVariables>;
 export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LoginUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}}]}}]}}]} as unknown as DocumentNode<LoginUserMutation, LoginUserMutationVariables>;
 export const LogoutUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogoutUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logout"}}]}}]} as unknown as DocumentNode<LogoutUserMutation, LogoutUserMutationVariables>;
 export const RegisterUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fullName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"registerInput"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"fullName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fullName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"confirmPassword"},"value":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}}]}}]}}]} as unknown as DocumentNode<RegisterUserMutation, RegisterUserMutationVariables>;
+export const GetPropertieDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPropertie"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getPropertie"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}}]}}]}}]} as unknown as DocumentNode<GetPropertieQuery, GetPropertieQueryVariables>;
+export const GetPropertiesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProperties"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getProperties"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetPropertiesQuery, GetPropertiesQueryVariables>;
 export const GetUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<GetUsersQuery, GetUsersQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -194,21 +197,20 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: { input: any; output: any; }
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: { input: any; output: any; }
+};
+
+export type CreatePropertieDto = {
+  address: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  numberOfUnits: Scalars['Float']['input'];
+  rentalCost: Scalars['Float']['input'];
+  type: Scalars['String']['input'];
 };
 
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
   message: Scalars['String']['output'];
-};
-
-export type LikeType = {
-  __typename?: 'LikeType';
-  id: Scalars['Int']['output'];
-  postId: Scalars['Int']['output'];
-  userId: Scalars['Int']['output'];
 };
 
 export type LoginDto = {
@@ -224,8 +226,7 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createPost: PostType;
-  deletePost: PostType;
+  createPropertie: Propertie;
   login: LoginResponse;
   logout: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
@@ -233,14 +234,9 @@ export type Mutation = {
 };
 
 
-export type MutationCreatePostArgs = {
-  text: Scalars['String']['input'];
-  video: Scalars['Upload']['input'];
-};
-
-
-export type MutationDeletePostArgs = {
-  id: Scalars['Float']['input'];
+export type MutationCreatePropertieArgs = {
+  propertieDto: CreatePropertieDto;
+  userId: Scalars['Float']['input'];
 };
 
 
@@ -253,44 +249,34 @@ export type MutationRegisterArgs = {
   registerInput: RegisterDto;
 };
 
-export type PostDetails = {
-  __typename?: 'PostDetails';
+export type Propertie = {
+  __typename?: 'Propertie';
+  address: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
-  id: Scalars['Int']['output'];
-  likes?: Maybe<Array<LikeType>>;
-  otherPostIds?: Maybe<Array<Scalars['Float']['output']>>;
-  text: Scalars['String']['output'];
-  user: User;
-  video: Scalars['String']['output'];
-};
-
-export type PostType = {
-  __typename?: 'PostType';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['Int']['output'];
-  likes?: Maybe<Array<LikeType>>;
-  text: Scalars['String']['output'];
-  user: User;
-  video: Scalars['String']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  numberOfUnits: Scalars['Float']['output'];
+  rentalCost: Scalars['Float']['output'];
+  type: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  getPostById: PostDetails;
-  getPosts: Array<PostType>;
+  getPropertie: Propertie;
+  getProperties: Array<Propertie>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
 };
 
 
-export type QueryGetPostByIdArgs = {
+export type QueryGetPropertieArgs = {
   id: Scalars['Float']['input'];
 };
 
 
-export type QueryGetPostsArgs = {
-  skip?: Scalars['Int']['input'];
-  take?: Scalars['Int']['input'];
+export type QueryGetPropertiesArgs = {
+  userId: Scalars['Float']['input'];
 };
 
 export type RegisterDto = {
@@ -318,13 +304,17 @@ export type User = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type CreatePostMutationVariables = Exact<{
-  text: Scalars['String']['input'];
-  video: Scalars['Upload']['input'];
+export type CreatePropertieMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  address: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+  numberOfUnits: Scalars['Float']['input'];
+  rentalCost: Scalars['Float']['input'];
+  userId: Scalars['Float']['input'];
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostType', id: number, text: string, video: string } };
+export type CreatePropertieMutation = { __typename?: 'Mutation', createPropertie: { __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number } };
 
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -349,48 +339,72 @@ export type RegisterUserMutationVariables = Exact<{
 
 export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, email: string, fullName: string } | null } };
 
+export type GetPropertieQueryVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type GetPropertieQuery = { __typename?: 'Query', getPropertie: { __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number } };
+
+export type GetPropertiesQueryVariables = Exact<{
+  userId: Scalars['Float']['input'];
+}>;
+
+
+export type GetPropertiesQuery = { __typename?: 'Query', getProperties: Array<{ __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number, createdAt: any, updatedAt: any }> };
+
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullName: string, email: string, image?: string | null }> };
 
 
-export const CreatePostDocument = gql`
-    mutation CreatePost($text: String!, $video: Upload!) {
-  createPost(text: $text, video: $video) {
+export const CreatePropertieDocument = gql`
+    mutation CreatePropertie($name: String!, $address: String!, $type: String!, $numberOfUnits: Float!, $rentalCost: Float!, $userId: Float!) {
+  createPropertie(
+    propertieDto: {name: $name, address: $address, type: $type, numberOfUnits: $numberOfUnits, rentalCost: $rentalCost}
+    userId: $userId
+  ) {
     id
-    text
-    video
+    name
+    address
+    type
+    numberOfUnits
+    rentalCost
   }
 }
     `;
-export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
+export type CreatePropertieMutationFn = Apollo.MutationFunction<CreatePropertieMutation, CreatePropertieMutationVariables>;
 
 /**
- * __useCreatePostMutation__
+ * __useCreatePropertieMutation__
  *
- * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreatePropertieMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePropertieMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+ * const [createPropertieMutation, { data, loading, error }] = useCreatePropertieMutation({
  *   variables: {
- *      text: // value for 'text'
- *      video: // value for 'video'
+ *      name: // value for 'name'
+ *      address: // value for 'address'
+ *      type: // value for 'type'
+ *      numberOfUnits: // value for 'numberOfUnits'
+ *      rentalCost: // value for 'rentalCost'
+ *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
+export function useCreatePropertieMutation(baseOptions?: Apollo.MutationHookOptions<CreatePropertieMutation, CreatePropertieMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, options);
+        return Apollo.useMutation<CreatePropertieMutation, CreatePropertieMutationVariables>(CreatePropertieDocument, options);
       }
-export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
-export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
-export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export type CreatePropertieMutationHookResult = ReturnType<typeof useCreatePropertieMutation>;
+export type CreatePropertieMutationResult = Apollo.MutationResult<CreatePropertieMutation>;
+export type CreatePropertieMutationOptions = Apollo.BaseMutationOptions<CreatePropertieMutation, CreatePropertieMutationVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($email: String!, $password: String!) {
   login(loginInput: {email: $email, password: $password}) {
@@ -501,6 +515,88 @@ export function useRegisterUserMutation(baseOptions?: Apollo.MutationHookOptions
 export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
 export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutation>;
 export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
+export const GetPropertieDocument = gql`
+    query GetPropertie($id: Float!) {
+  getPropertie(id: $id) {
+    id
+    name
+    address
+    type
+    numberOfUnits
+    rentalCost
+  }
+}
+    `;
+
+/**
+ * __useGetPropertieQuery__
+ *
+ * To run a query within a React component, call `useGetPropertieQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPropertieQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPropertieQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPropertieQuery(baseOptions: Apollo.QueryHookOptions<GetPropertieQuery, GetPropertieQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPropertieQuery, GetPropertieQueryVariables>(GetPropertieDocument, options);
+      }
+export function useGetPropertieLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPropertieQuery, GetPropertieQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPropertieQuery, GetPropertieQueryVariables>(GetPropertieDocument, options);
+        }
+export type GetPropertieQueryHookResult = ReturnType<typeof useGetPropertieQuery>;
+export type GetPropertieLazyQueryHookResult = ReturnType<typeof useGetPropertieLazyQuery>;
+export type GetPropertieQueryResult = Apollo.QueryResult<GetPropertieQuery, GetPropertieQueryVariables>;
+export const GetPropertiesDocument = gql`
+    query GetProperties($userId: Float!) {
+  getProperties(userId: $userId) {
+    id
+    name
+    address
+    type
+    numberOfUnits
+    rentalCost
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetPropertiesQuery__
+ *
+ * To run a query within a React component, call `useGetPropertiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPropertiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPropertiesQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetPropertiesQuery(baseOptions: Apollo.QueryHookOptions<GetPropertiesQuery, GetPropertiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPropertiesQuery, GetPropertiesQueryVariables>(GetPropertiesDocument, options);
+      }
+export function useGetPropertiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPropertiesQuery, GetPropertiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPropertiesQuery, GetPropertiesQueryVariables>(GetPropertiesDocument, options);
+        }
+export type GetPropertiesQueryHookResult = ReturnType<typeof useGetPropertiesQuery>;
+export type GetPropertiesLazyQueryHookResult = ReturnType<typeof useGetPropertiesLazyQuery>;
+export type GetPropertiesQueryResult = Apollo.QueryResult<GetPropertiesQuery, GetPropertiesQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {
