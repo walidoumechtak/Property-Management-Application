@@ -47,6 +47,17 @@ export class PropertieService {
         return data;
     }
 
+    async getPropertiesByname(name: string) {
+        const data = this.prisma.property.findMany({
+            where: {
+                name: {
+                    contains: name,
+                },
+            },
+        });
+        return data;
+    }
+
     async getPropertie(id: number) {
         const propertie = this.prisma.property.findUnique({
             where: {

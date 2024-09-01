@@ -29,6 +29,12 @@ export type CreatePropertieDto = {
   type: Scalars['String']['input'];
 };
 
+export type CreateTenantDto = {
+  contact: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  section: Scalars['String']['input'];
+};
+
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
@@ -49,16 +55,30 @@ export type LoginResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createPropertie: Propertie;
+  createTenant: Tenant;
+  deleteTenant: Tenant;
   login: LoginResponse;
   logout: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
   register: RegisterResponse;
+  updateTenant: Tenant;
 };
 
 
 export type MutationCreatePropertieArgs = {
   propertieDto: CreatePropertieDto;
   userId: Scalars['Float']['input'];
+};
+
+
+export type MutationCreateTenantArgs = {
+  TenantDto: CreateTenantDto;
+  propertyId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteTenantArgs = {
+  tenantId: Scalars['Float']['input'];
 };
 
 
@@ -69,6 +89,12 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   registerInput: RegisterDto;
+};
+
+
+export type MutationUpdateTenantArgs = {
+  UpdateTenantDto: CreateTenantDto;
+  tenantId: Scalars['Float']['input'];
 };
 
 export type Propertie = {
@@ -87,6 +113,8 @@ export type Query = {
   __typename?: 'Query';
   getPropertie: Propertie;
   getProperties: Array<Propertie>;
+  getPropertiesByname: Array<Propertie>;
+  getTenants: Array<Tenant>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
 };
@@ -101,6 +129,16 @@ export type QueryGetPropertiesArgs = {
   userId: Scalars['Float']['input'];
 };
 
+
+export type QueryGetPropertiesBynameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type QueryGetTenantsArgs = {
+  propertyId: Scalars['Float']['input'];
+};
+
 export type RegisterDto = {
   confirmPassword: Scalars['String']['input'];
   email: Scalars['String']['input'];
@@ -112,6 +150,16 @@ export type RegisterResponse = {
   __typename?: 'RegisterResponse';
   error?: Maybe<ErrorType>;
   user?: Maybe<User>;
+};
+
+export type Tenant = {
+  __typename?: 'Tenant';
+  contact: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  section: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type User = {
@@ -138,6 +186,23 @@ export type CreatePropertieMutationVariables = Exact<{
 
 export type CreatePropertieMutation = { __typename?: 'Mutation', createPropertie: { __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number } };
 
+export type CreateTenantMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  contact: Scalars['String']['input'];
+  section: Scalars['String']['input'];
+  propertyId: Scalars['Float']['input'];
+}>;
+
+
+export type CreateTenantMutation = { __typename?: 'Mutation', createTenant: { __typename?: 'Tenant', id: number, name: string, contact: string, section: string } };
+
+export type DeleteTenantMutationVariables = Exact<{
+  tenantId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteTenantMutation = { __typename?: 'Mutation', deleteTenant: { __typename?: 'Tenant', name: string } };
+
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -161,6 +226,16 @@ export type RegisterUserMutationVariables = Exact<{
 
 export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, email: string, fullName: string } | null } };
 
+export type UpdateTenantMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  contact: Scalars['String']['input'];
+  section: Scalars['String']['input'];
+  tenantId: Scalars['Float']['input'];
+}>;
+
+
+export type UpdateTenantMutation = { __typename?: 'Mutation', updateTenant: { __typename?: 'Tenant', id: number, name: string, contact: string, section: string } };
+
 export type GetPropertieQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -175,6 +250,20 @@ export type GetPropertiesQueryVariables = Exact<{
 
 export type GetPropertiesQuery = { __typename?: 'Query', getProperties: Array<{ __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number, createdAt: any, updatedAt: any }> };
 
+export type GetPropertiesByNameQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type GetPropertiesByNameQuery = { __typename?: 'Query', getPropertiesByname: Array<{ __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number }> };
+
+export type GetTenantsQueryVariables = Exact<{
+  propertyId: Scalars['Float']['input'];
+}>;
+
+
+export type GetTenantsQuery = { __typename?: 'Query', getTenants: Array<{ __typename?: 'Tenant', id: number, name: string, contact: string, section: string }> };
+
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -182,11 +271,16 @@ export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename
 
 
 export const CreatePropertieDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreatePropertie"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"address"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"numberOfUnits"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"rentalCost"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createPropertie"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"propertieDto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"address"},"value":{"kind":"Variable","name":{"kind":"Name","value":"address"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"numberOfUnits"},"value":{"kind":"Variable","name":{"kind":"Name","value":"numberOfUnits"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"rentalCost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"rentalCost"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}}]}}]}}]} as unknown as DocumentNode<CreatePropertieMutation, CreatePropertieMutationVariables>;
+export const CreateTenantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTenant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"contact"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"section"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"propertyId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"TenantDto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"contact"},"value":{"kind":"Variable","name":{"kind":"Name","value":"contact"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"section"},"value":{"kind":"Variable","name":{"kind":"Name","value":"section"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"propertyId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"propertyId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contact"}},{"kind":"Field","name":{"kind":"Name","value":"section"}}]}}]}}]} as unknown as DocumentNode<CreateTenantMutation, CreateTenantMutationVariables>;
+export const DeleteTenantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteTenant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"tenantId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<DeleteTenantMutation, DeleteTenantMutationVariables>;
 export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LoginUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}}]}}]}}]} as unknown as DocumentNode<LoginUserMutation, LoginUserMutationVariables>;
 export const LogoutUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogoutUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logout"}}]}}]} as unknown as DocumentNode<LogoutUserMutation, LogoutUserMutationVariables>;
 export const RegisterUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fullName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"registerInput"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"fullName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fullName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"confirmPassword"},"value":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}}]}}]}}]} as unknown as DocumentNode<RegisterUserMutation, RegisterUserMutationVariables>;
+export const UpdateTenantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTenant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"contact"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"section"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"UpdateTenantDto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"contact"},"value":{"kind":"Variable","name":{"kind":"Name","value":"contact"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"section"},"value":{"kind":"Variable","name":{"kind":"Name","value":"section"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"tenantId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contact"}},{"kind":"Field","name":{"kind":"Name","value":"section"}}]}}]}}]} as unknown as DocumentNode<UpdateTenantMutation, UpdateTenantMutationVariables>;
 export const GetPropertieDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPropertie"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getPropertie"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}}]}}]}}]} as unknown as DocumentNode<GetPropertieQuery, GetPropertieQueryVariables>;
 export const GetPropertiesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProperties"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getProperties"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetPropertiesQuery, GetPropertiesQueryVariables>;
+export const GetPropertiesByNameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPropertiesByName"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getPropertiesByname"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}}]}}]}}]} as unknown as DocumentNode<GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables>;
+export const GetTenantsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTenants"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"propertyId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getTenants"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"propertyId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"propertyId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contact"}},{"kind":"Field","name":{"kind":"Name","value":"section"}}]}}]}}]} as unknown as DocumentNode<GetTenantsQuery, GetTenantsQueryVariables>;
 export const GetUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<GetUsersQuery, GetUsersQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -207,6 +301,12 @@ export type CreatePropertieDto = {
   type: Scalars['String']['input'];
 };
 
+export type CreateTenantDto = {
+  contact: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  section: Scalars['String']['input'];
+};
+
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
@@ -227,16 +327,30 @@ export type LoginResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createPropertie: Propertie;
+  createTenant: Tenant;
+  deleteTenant: Tenant;
   login: LoginResponse;
   logout: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
   register: RegisterResponse;
+  updateTenant: Tenant;
 };
 
 
 export type MutationCreatePropertieArgs = {
   propertieDto: CreatePropertieDto;
   userId: Scalars['Float']['input'];
+};
+
+
+export type MutationCreateTenantArgs = {
+  TenantDto: CreateTenantDto;
+  propertyId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteTenantArgs = {
+  tenantId: Scalars['Float']['input'];
 };
 
 
@@ -247,6 +361,12 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   registerInput: RegisterDto;
+};
+
+
+export type MutationUpdateTenantArgs = {
+  UpdateTenantDto: CreateTenantDto;
+  tenantId: Scalars['Float']['input'];
 };
 
 export type Propertie = {
@@ -265,6 +385,8 @@ export type Query = {
   __typename?: 'Query';
   getPropertie: Propertie;
   getProperties: Array<Propertie>;
+  getPropertiesByname: Array<Propertie>;
+  getTenants: Array<Tenant>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
 };
@@ -279,6 +401,16 @@ export type QueryGetPropertiesArgs = {
   userId: Scalars['Float']['input'];
 };
 
+
+export type QueryGetPropertiesBynameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type QueryGetTenantsArgs = {
+  propertyId: Scalars['Float']['input'];
+};
+
 export type RegisterDto = {
   confirmPassword: Scalars['String']['input'];
   email: Scalars['String']['input'];
@@ -290,6 +422,16 @@ export type RegisterResponse = {
   __typename?: 'RegisterResponse';
   error?: Maybe<ErrorType>;
   user?: Maybe<User>;
+};
+
+export type Tenant = {
+  __typename?: 'Tenant';
+  contact: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  section: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type User = {
@@ -316,6 +458,23 @@ export type CreatePropertieMutationVariables = Exact<{
 
 export type CreatePropertieMutation = { __typename?: 'Mutation', createPropertie: { __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number } };
 
+export type CreateTenantMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  contact: Scalars['String']['input'];
+  section: Scalars['String']['input'];
+  propertyId: Scalars['Float']['input'];
+}>;
+
+
+export type CreateTenantMutation = { __typename?: 'Mutation', createTenant: { __typename?: 'Tenant', id: number, name: string, contact: string, section: string } };
+
+export type DeleteTenantMutationVariables = Exact<{
+  tenantId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteTenantMutation = { __typename?: 'Mutation', deleteTenant: { __typename?: 'Tenant', name: string } };
+
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -339,6 +498,16 @@ export type RegisterUserMutationVariables = Exact<{
 
 export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, email: string, fullName: string } | null } };
 
+export type UpdateTenantMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  contact: Scalars['String']['input'];
+  section: Scalars['String']['input'];
+  tenantId: Scalars['Float']['input'];
+}>;
+
+
+export type UpdateTenantMutation = { __typename?: 'Mutation', updateTenant: { __typename?: 'Tenant', id: number, name: string, contact: string, section: string } };
+
 export type GetPropertieQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -352,6 +521,20 @@ export type GetPropertiesQueryVariables = Exact<{
 
 
 export type GetPropertiesQuery = { __typename?: 'Query', getProperties: Array<{ __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number, createdAt: any, updatedAt: any }> };
+
+export type GetPropertiesByNameQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type GetPropertiesByNameQuery = { __typename?: 'Query', getPropertiesByname: Array<{ __typename?: 'Propertie', id: number, name: string, address: string, type: string, numberOfUnits: number, rentalCost: number }> };
+
+export type GetTenantsQueryVariables = Exact<{
+  propertyId: Scalars['Float']['input'];
+}>;
+
+
+export type GetTenantsQuery = { __typename?: 'Query', getTenants: Array<{ __typename?: 'Tenant', id: number, name: string, contact: string, section: string }> };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -405,6 +588,81 @@ export function useCreatePropertieMutation(baseOptions?: Apollo.MutationHookOpti
 export type CreatePropertieMutationHookResult = ReturnType<typeof useCreatePropertieMutation>;
 export type CreatePropertieMutationResult = Apollo.MutationResult<CreatePropertieMutation>;
 export type CreatePropertieMutationOptions = Apollo.BaseMutationOptions<CreatePropertieMutation, CreatePropertieMutationVariables>;
+export const CreateTenantDocument = gql`
+    mutation CreateTenant($name: String!, $contact: String!, $section: String!, $propertyId: Float!) {
+  createTenant(
+    TenantDto: {name: $name, contact: $contact, section: $section}
+    propertyId: $propertyId
+  ) {
+    id
+    name
+    contact
+    section
+  }
+}
+    `;
+export type CreateTenantMutationFn = Apollo.MutationFunction<CreateTenantMutation, CreateTenantMutationVariables>;
+
+/**
+ * __useCreateTenantMutation__
+ *
+ * To run a mutation, you first call `useCreateTenantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTenantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTenantMutation, { data, loading, error }] = useCreateTenantMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      contact: // value for 'contact'
+ *      section: // value for 'section'
+ *      propertyId: // value for 'propertyId'
+ *   },
+ * });
+ */
+export function useCreateTenantMutation(baseOptions?: Apollo.MutationHookOptions<CreateTenantMutation, CreateTenantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTenantMutation, CreateTenantMutationVariables>(CreateTenantDocument, options);
+      }
+export type CreateTenantMutationHookResult = ReturnType<typeof useCreateTenantMutation>;
+export type CreateTenantMutationResult = Apollo.MutationResult<CreateTenantMutation>;
+export type CreateTenantMutationOptions = Apollo.BaseMutationOptions<CreateTenantMutation, CreateTenantMutationVariables>;
+export const DeleteTenantDocument = gql`
+    mutation DeleteTenant($tenantId: Float!) {
+  deleteTenant(tenantId: $tenantId) {
+    name
+  }
+}
+    `;
+export type DeleteTenantMutationFn = Apollo.MutationFunction<DeleteTenantMutation, DeleteTenantMutationVariables>;
+
+/**
+ * __useDeleteTenantMutation__
+ *
+ * To run a mutation, you first call `useDeleteTenantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTenantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTenantMutation, { data, loading, error }] = useDeleteTenantMutation({
+ *   variables: {
+ *      tenantId: // value for 'tenantId'
+ *   },
+ * });
+ */
+export function useDeleteTenantMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTenantMutation, DeleteTenantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTenantMutation, DeleteTenantMutationVariables>(DeleteTenantDocument, options);
+      }
+export type DeleteTenantMutationHookResult = ReturnType<typeof useDeleteTenantMutation>;
+export type DeleteTenantMutationResult = Apollo.MutationResult<DeleteTenantMutation>;
+export type DeleteTenantMutationOptions = Apollo.BaseMutationOptions<DeleteTenantMutation, DeleteTenantMutationVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($email: String!, $password: String!) {
   login(loginInput: {email: $email, password: $password}) {
@@ -515,6 +773,48 @@ export function useRegisterUserMutation(baseOptions?: Apollo.MutationHookOptions
 export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
 export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutation>;
 export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
+export const UpdateTenantDocument = gql`
+    mutation UpdateTenant($name: String!, $contact: String!, $section: String!, $tenantId: Float!) {
+  updateTenant(
+    UpdateTenantDto: {name: $name, contact: $contact, section: $section}
+    tenantId: $tenantId
+  ) {
+    id
+    name
+    contact
+    section
+  }
+}
+    `;
+export type UpdateTenantMutationFn = Apollo.MutationFunction<UpdateTenantMutation, UpdateTenantMutationVariables>;
+
+/**
+ * __useUpdateTenantMutation__
+ *
+ * To run a mutation, you first call `useUpdateTenantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTenantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTenantMutation, { data, loading, error }] = useUpdateTenantMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      contact: // value for 'contact'
+ *      section: // value for 'section'
+ *      tenantId: // value for 'tenantId'
+ *   },
+ * });
+ */
+export function useUpdateTenantMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTenantMutation, UpdateTenantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTenantMutation, UpdateTenantMutationVariables>(UpdateTenantDocument, options);
+      }
+export type UpdateTenantMutationHookResult = ReturnType<typeof useUpdateTenantMutation>;
+export type UpdateTenantMutationResult = Apollo.MutationResult<UpdateTenantMutation>;
+export type UpdateTenantMutationOptions = Apollo.BaseMutationOptions<UpdateTenantMutation, UpdateTenantMutationVariables>;
 export const GetPropertieDocument = gql`
     query GetPropertie($id: Float!) {
   getPropertie(id: $id) {
@@ -597,6 +897,84 @@ export function useGetPropertiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetPropertiesQueryHookResult = ReturnType<typeof useGetPropertiesQuery>;
 export type GetPropertiesLazyQueryHookResult = ReturnType<typeof useGetPropertiesLazyQuery>;
 export type GetPropertiesQueryResult = Apollo.QueryResult<GetPropertiesQuery, GetPropertiesQueryVariables>;
+export const GetPropertiesByNameDocument = gql`
+    query GetPropertiesByName($name: String!) {
+  getPropertiesByname(name: $name) {
+    id
+    name
+    address
+    type
+    numberOfUnits
+    rentalCost
+  }
+}
+    `;
+
+/**
+ * __useGetPropertiesByNameQuery__
+ *
+ * To run a query within a React component, call `useGetPropertiesByNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPropertiesByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPropertiesByNameQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useGetPropertiesByNameQuery(baseOptions: Apollo.QueryHookOptions<GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables>(GetPropertiesByNameDocument, options);
+      }
+export function useGetPropertiesByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables>(GetPropertiesByNameDocument, options);
+        }
+export type GetPropertiesByNameQueryHookResult = ReturnType<typeof useGetPropertiesByNameQuery>;
+export type GetPropertiesByNameLazyQueryHookResult = ReturnType<typeof useGetPropertiesByNameLazyQuery>;
+export type GetPropertiesByNameQueryResult = Apollo.QueryResult<GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables>;
+export const GetTenantsDocument = gql`
+    query GetTenants($propertyId: Float!) {
+  getTenants(propertyId: $propertyId) {
+    id
+    name
+    contact
+    section
+  }
+}
+    `;
+
+/**
+ * __useGetTenantsQuery__
+ *
+ * To run a query within a React component, call `useGetTenantsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantsQuery({
+ *   variables: {
+ *      propertyId: // value for 'propertyId'
+ *   },
+ * });
+ */
+export function useGetTenantsQuery(baseOptions: Apollo.QueryHookOptions<GetTenantsQuery, GetTenantsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTenantsQuery, GetTenantsQueryVariables>(GetTenantsDocument, options);
+      }
+export function useGetTenantsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantsQuery, GetTenantsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTenantsQuery, GetTenantsQueryVariables>(GetTenantsDocument, options);
+        }
+export type GetTenantsQueryHookResult = ReturnType<typeof useGetTenantsQuery>;
+export type GetTenantsLazyQueryHookResult = ReturnType<typeof useGetTenantsLazyQuery>;
+export type GetTenantsQueryResult = Apollo.QueryResult<GetTenantsQuery, GetTenantsQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {

@@ -3,33 +3,37 @@ import { ImCross } from "react-icons/im";
 import Input from "./Inupt";
 import { useState } from "react";
 import { GraphQLErrorExtensions } from "graphql";
-import { CreateTenantMutation } from "../gql/graphql";
+import { UpdateTenantMutation } from "../gql/graphql";
 import { useMutation } from "@apollo/client";
-import { useUserStore } from "../stores/userStore";
-import { CREATE_TENANT } from "../graphql/mutations/CreateTenant";
+import { UPDATE_TENANT } from "../graphql/mutations/UpdateTenant";
 
-function AddTenantModal() {
-    const setIsAddTenantModalOpen = useGeneralStore((state) => state.setIsAddTenantModalOpen);
-    const isAddTenantModalOpen = useGeneralStore((state) => state.isAddTenantModalOpen);
+interface UpdateTenantModalProps {
+    tenantId: number;
+}
+
+function UpdateTenantModal(tenantId: UpdateTenantModalProps) {
+    const setIsUpdateTenantModalOpen = useGeneralStore((state) => state.setIsUpdateTenantModalOpen);
+    const isUpdateTenantModalOpen = useGeneralStore((state) => state.isUpdateTenantModalOpen);
     const [errors, setErrors] = useState<GraphQLErrorExtensions>({});
-    const [addTenant, {data, error, loading}] = useMutation<CreateTenantMutation>(CREATE_TENANT);
     const [tenantData, setTenantData] = useState({
         name: "",
         contact: "",
         section: ""
     });
+    const [updateTenant, {data, error, loading}] = useMutation<UpdateTenantMutation>(UPDATE_TENANT);
+  
 
-    const propertyId = window.location.pathname.split("/").pop();
+    // const propertyId = window.location.pathname.split("/").pop();
 
     const handleAddTenant = async () => {
-        console.log("propertyId: ", propertyId);
+        // console.log("propertyId: ", propertyId);
         setErrors({});
-        const tenant = await addTenant({
+        const tenant = await updateTenant({
             variables: {
                 name: tenantData.name,
                 contact: tenantData.contact,
                 section: tenantData.section,
-                propertyId: propertyId ? Number(propertyId) : 0,    
+                tenantId: tenantId,
             },
             refetchQueries: ["GetTenants"],
             onCompleted: () => {
@@ -39,14 +43,14 @@ function AddTenantModal() {
             setErrors(err.graphQLErrors[0].extensions);
         })
         if (tenant) {
-            setIsAddTenantModalOpen(!isAddTenantModalOpen);
-            console.log("is Tenant Modal open:" ,isAddTenantModalOpen)
+            setIsUpdateTenantModalOpen(!isUpdateTenantModalOpen);
+            console.log("is Tenant Modal open:" ,isUpdateTenantModalOpen)
         }
     }
     
     return (
         <div
-            id="AddTenantModal"
+            id="UpdateTenantModal"
             className="fixed flex items-center justify-center w-full h-full bg-black bg-opacity-50
                        z-50 top-0 left-0"
             >
@@ -56,7 +60,7 @@ function AddTenantModal() {
                 <div
                     className="w-full flex justify-end"
                 >
-                    <button onClick={() => {setIsAddTenantModalOpen(!isAddTenantModalOpen)}}>
+                    <button onClick={() => {setIsUpdateTenantModalOpen(!isUpdateTenantModalOpen)}}>
                         <ImCross size={"17"} color="balck"/>
                     </button>
                 </div>
@@ -108,7 +112,7 @@ function AddTenantModal() {
                           : "bg-[#F02C56]",
                       ].join(" ")}
                       >
-                    Add Tenant
+                    Update Tenant
                 </button>   
             </div>
             </div>
@@ -116,4 +120,4 @@ function AddTenantModal() {
     );
 }
 
-export default AddTenantModal;
+export default UpdateTenantModal;

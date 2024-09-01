@@ -31,4 +31,12 @@ export class PropertieResolver {
     ) {
         return await this.propertieService.getPropertie(id);
     }
+
+    @Query(() => [Propertie])
+    async getPropertiesByname(
+        @Args('name') name: string,
+    ) {
+        return await this.propertieService.getPropertiesByname(name);
+    }
+
 }

@@ -13,8 +13,9 @@ import {GrLogout} from 'react-icons/gr'
 import { useGeneralStore } from "../stores/generalStore";
 import { useUserStore } from "../stores/userStore";
 import { LOGOUT_USER } from "../graphql/mutations/Logout";
-import { useMutation } from "@apollo/client";
-import { LogoutUserMutation } from "../gql/graphql";
+import { useMutation, useQuery } from "@apollo/client";
+import { GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables, LogoutUserMutation } from "../gql/graphql";
+import { GET_PROPERTIES_BY_NAME } from "../graphql/queries/getPropertiesByname";
 
 function TopNav() {
 
@@ -24,6 +25,13 @@ function TopNav() {
     const setUser = useUserStore((state) => state.setUser);
     const [logoutUser] = useMutation<LogoutUserMutation>(LOGOUT_USER);
     const [showMenu, setShowMenu] = useState(false);
+    const [propertieName, setPropertieName] = useState("");
+    const {data, error, loading} = useQuery<GetPropertiesByNameQuery, GetPropertiesByNameQueryVariables>(GET_PROPERTIES_BY_NAME, {
+        variables: {
+            name: propertieName,
+        }
+    });
+
     const handleLogout = async () => {
         try{
             await logoutUser();
@@ -42,6 +50,11 @@ function TopNav() {
     
     return (
         <div id="TopNav" className="bg-white fixed z-30 flex items-center w-full border-b h-[61px]">
+            {data?.getPropertiesByname && (
+                <div>
+                    walid
+                </div>
+            )}
             <div className={"max-w-[1150px] flex items-center justify-between w-full px-6 mx-auto"}>
                 <div className={"w-[80%]"}>
                     <Link to="/">
@@ -57,9 +70,10 @@ function TopNav() {
                 rounded-full max-w-[380px] w-full">
             <input
               type="text"
+              onChange={(e) => setPropertieName(e.target.value)}
               className="w-full pl-3 my-2 bg-transparent placeholder-[#838383]
                 text-[15px] focus:outline-none"
-              placeholder="Search accounts"
+              placeholder="Search properties"
             />
             <div className="px-3 py-1 flex items-center border-l border-l-gray-4">
               <AiOutlineSearch size="20" color="#838383" />
