@@ -113,6 +113,7 @@ To install and run the Property Management Application, follow these steps:
 3. Create folder called db or run `mkdir db`
 4. Build the Docker image: `docker-compose build`
 5. Start the application: `docker-compose up`
+6. run this cmd `docker exec backend npx prisma migrate dev --name init`
 
 Make sure to configure the necessary environment variables before running the application.
 
