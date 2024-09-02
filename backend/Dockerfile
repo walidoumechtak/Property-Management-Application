@@ -4,15 +4,22 @@ FROM node:20
 WORKDIR /app/backend
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package.json ./
+COPY package-lock.json ./
 
 RUN npm install -g @nestjs/cli
 
+RUN npm cache clean --force
+
 # Install dependencies
-RUN npm install
+RUN npm install --no-package-lock
+
 
 # Copy the rest of the application code
 COPY . .
+
+RUN npx prisma generate
+
 
 # Expose the port number the app runs on
 EXPOSE 3000

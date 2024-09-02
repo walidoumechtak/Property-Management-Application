@@ -31,6 +31,15 @@ function Register() {
                 password: registerData.password,
                 fullName: registerData.fullName,
                 confirmPassword: registerData.confirmPassword,
+            },
+            onCompleted: () => {
+                setLoginIsOpen(true);
+                setRegisterData({
+                    email: "",
+                    password: "",
+                    confirmPassword: "",
+                    fullName: ""
+                })
             }
         }).catch(err => {
             setErrors(err.graphQLErrors[0].extensions);
