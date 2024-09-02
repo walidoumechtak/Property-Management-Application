@@ -110,8 +110,9 @@ To install and run the Property Management Application, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/Property-Management-Application.git`
 2. Navigate to the project directory: `cd Property-Management-Application`
-3. Build the Docker image: `docker-compose build`
-4. Start the application: `docker-compose up`
+3. Create folder called db or run `mkdir db`
+4. Build the Docker image: `docker-compose build`
+5. Start the application: `docker-compose up`
 
 Make sure to configure the necessary environment variables before running the application.
 
