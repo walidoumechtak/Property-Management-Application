@@ -6,6 +6,7 @@ export interface GeneralState {
     isPropertyModalOpen: boolean;
     isAddTenantModalOpen: boolean;
     isUpdateTenantModalOpen: boolean;
+    isJustRegistered: boolean;
 }
 
 export interface GeneralActions {
@@ -13,6 +14,7 @@ export interface GeneralActions {
     setIsPropertyModalOpen: (isOpen: boolean) => void;
     setIsAddTenantModalOpen: (isOpen: boolean) => void;
     setIsUpdateTenantModalOpen: (isOpen: boolean) => void;
+    setIsJustRegistered: (isOpen: boolean) => void;
 }
 
 export const useGeneralStore = create<GeneralState& GeneralActions>()(
@@ -24,10 +26,12 @@ export const useGeneralStore = create<GeneralState& GeneralActions>()(
                     isPropertyModalOpen: false,
                     isAddTenantModalOpen: false,
                     isUpdateTenantModalOpen: false,
+                    isJustRegistered: false,
                     setLoginIsOpen: (isOpen: boolean) => set({ isLoginOpen: isOpen }),
                     setIsPropertyModalOpen: (isOpen: boolean) => set({ isPropertyModalOpen: isOpen }),
                     setIsAddTenantModalOpen: (isOpen: boolean) => set({ isAddTenantModalOpen: isOpen }),
-                    setIsUpdateTenantModalOpen: (isOpen: boolean) => set({ isUpdateTenantModalOpen: isOpen })
+                    setIsUpdateTenantModalOpen: (isOpen: boolean) => set({ isUpdateTenantModalOpen: isOpen }),
+                    setIsJustRegistered: (isOpen: boolean) => set({ isJustRegistered: isOpen })
                 }
             ),
             {

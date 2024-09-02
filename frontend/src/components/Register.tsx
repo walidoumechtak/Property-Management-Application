@@ -13,6 +13,8 @@ function Register() {
     const [registerUser, {data, error, loading}] = useMutation<RegisterUserMutation,
     RegisterUserMutationVariables>(REGISTER_USER);
     
+    
+    const setIsjustRegistered = useGeneralStore(state => state.setIsJustRegistered);
     const setUser = useUserStore(state => state.setUser);
     const setLoginIsOpen = useGeneralStore(state => state.setLoginIsOpen);
     const [errors, setErrors] = useState<GraphQLErrorExtensions>({});
@@ -39,7 +41,8 @@ function Register() {
                     password: "",
                     confirmPassword: "",
                     fullName: ""
-                })
+                });
+                setIsjustRegistered(true);
             }
         }).catch(err => {
             setErrors(err.graphQLErrors[0].extensions);

@@ -8,7 +8,8 @@ function AuthModal() {
     const [isRegistered, setIsRegistered] = useState(false);
     const setLoginIsOpen = useGeneralStore((state) => state.setLoginIsOpen);
     const isLoginOpen = useGeneralStore((state) => state.isLoginOpen);
-    
+    const isJustRegistred = useGeneralStore(state => state.isJustRegistered);
+
     return (
         <div
             id="AuthModal"
@@ -25,7 +26,7 @@ function AuthModal() {
                         <ImCross size={"17"} color="balck"/>
                     </button>
                 </div>
-                {isRegistered ? <Login /> : <Register />}
+                {(isRegistered || isJustRegistred)  ? <Login /> : <Register />}
                 <div className="absolute left-0 bottom-0 border-t w-full
                     py-5 flex justify-center items-center "
                 >
@@ -35,7 +36,7 @@ function AuthModal() {
                     <button className="text-[14px] text-[#F02C56] font-semibold pl-1"
                             onClick={() => setIsRegistered(!isRegistered)}
                     >
-                        {isRegistered ? " Register" : " Login"}
+                        {(isRegistered || isJustRegistred) ? " Register" : " Login"}
                     </button>
                 </div>
             </div>

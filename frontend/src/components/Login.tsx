@@ -19,6 +19,7 @@ function Login() {
         password: "",
     });
     const [invalidCredentials, setInvalidCredentials] = useState("");
+    const setIsjustRegistered = useGeneralStore(state => state.setIsJustRegistered);
 
     const handleLogin = async () => {
         setErrors({});
@@ -28,7 +29,11 @@ function Login() {
                 variables: {
                     email: loginData.email,
                     password: loginData.password,
-            }});
+                },
+                onCompleted: () => {
+                    setIsjustRegistered(false);
+                }
+            });
             response && response.data && setUser(response.data.login.user);
             setLoginIsOpen(false);
             setInvalidCredentials("");
