@@ -13,13 +13,15 @@ import { GET_PROPERTIE } from "../graphql/queries/getPropertie";
 import { UPDATE_TENANT } from "../graphql/mutations/UpdateTenant";
 import { DELETE_TENANT } from "../graphql/mutations/DeleteTenant";
 import UpdateTenantModal from "../components/UpdateTenantModal";
+import PaymentsModal from "../components/PaymentsModal";
 
 function SinglePropertie() {
     let id = window.location.pathname.split("/").pop();
     const isAddTenantModalOpen = useGeneralStore((state) => state.isAddTenantModalOpen);
     const isUpdateTenantModalOpen = useGeneralStore((state) => state.isUpdateTenantModalOpen);
     const setIsUpdateTenantModalOpen = useGeneralStore((state) => state.setIsUpdateTenantModalOpen);
-    const navigate = useNavigate();
+    const isPaymentsModalOpen = useGeneralStore((state) => state.isPaymentsModalOpen);
+    const setIsPaymentsModalOpen = useGeneralStore((state) => state.setIsPaymentsModalOpen);
     const {data, error, loading} = useQuery<GetPropertieQuery, GetPropertieQueryVariables>(GET_PROPERTIE, {
       variables: {
           id: id ? Number(id) : 0,
@@ -122,8 +124,15 @@ function SinglePropertie() {
                                 { isUpdateTenantModalOpen && <UpdateTenantModal tenantId={tenant.id} />}
                                 <button 
                                   onClick={() => setIsUpdateTenantModalOpen(!isUpdateTenantModalOpen)}
-                                  className="bg-green-500 text-white px-3 py-2 font-semibold rounded-sm border border-green-500 hover:bg-white hover:text-green-500">
+                                  className="bg-green-500 mr-4 text-white px-3 py-2 font-semibold rounded-sm border border-green-500 hover:bg-white hover:text-green-500">
                                     Edit
+                                </button>
+                                {isPaymentsModalOpen && <PaymentsModal tenantId={tenant.id} />}
+                                <button
+                                  onClick={() => setIsPaymentsModalOpen(!isPaymentsModalOpen)}
+                                  className="bg-blue-500 text-white px-3 py-2 font-semibold rounded-sm border border-blue-500 hover:bg-white hover:text-blue-500"
+                                >
+                                  Payments
                                 </button>
                               </div>
                           </div>
