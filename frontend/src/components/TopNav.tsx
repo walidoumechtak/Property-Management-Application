@@ -50,11 +50,6 @@ function TopNav() {
     
     return (
         <div id="TopNav" className="bg-white fixed z-30 flex items-center w-full border-b h-[61px]">
-            {data?.getPropertiesByname && (
-                <div>
-                    walid
-                </div>
-            )}
             <div className={"max-w-[1150px] flex items-center justify-between w-full px-6 mx-auto"}>
                 <div className={"w-[80%]"}>
                     <Link to="/">
@@ -66,8 +61,36 @@ function TopNav() {
                     />
                     </Link>
                 </div>
-          <div className="hidden md:flex items-center bg-[#F1F1F1] p-1
+          <div className="hidden relative md:flex items-center bg-[#F1F1F1] p-1
                 rounded-full max-w-[380px] w-full">
+             {data?.getPropertiesByname && (
+                <div 
+                    className={[(propertieName && data.getPropertiesByname.length !== 0) ? 'absolute' : 'hidden',
+                        'bg-white shadow-custom w-full top-[50px] rounded-sm p-5 max-w-[380px] max-h-[300px] overflow-auto'].join(" ")}>
+                    {propertieName && data.getPropertiesByname.map((property) => (
+                        <Link
+                            key={property.id}
+                            to={`/property/${property.id}`}
+                            className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100"
+                        >
+                            <img
+                                src={"https://picsum.photos/200"}
+                                width={40}
+                                height={40}
+                                className="rounded-full"
+                            />
+                            <div>
+                                <span className="block text-sm text-[#161724]">
+                                    {property.name}
+                                </span>
+                                <span className="block text-xs text-[#838383]">
+                                    {property.address}
+                                </span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            )}
             <input
               type="text"
               onChange={(e) => setPropertieName(e.target.value)}

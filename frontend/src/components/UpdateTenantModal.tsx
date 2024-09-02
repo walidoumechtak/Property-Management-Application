@@ -25,15 +25,17 @@ function UpdateTenantModal(tenantId: UpdateTenantModalProps) {
 
     // const propertyId = window.location.pathname.split("/").pop();
 
-    const handleAddTenant = async () => {
-        // console.log("propertyId: ", propertyId);
+    const handleUpdateTenant = async () => {
+        console.log("tenantId: ", tenantId);
+        console.log("tenantData: ", tenantData);
+
         setErrors({});
         const tenant = await updateTenant({
             variables: {
                 name: tenantData.name,
                 contact: tenantData.contact,
                 section: tenantData.section,
-                tenantId: tenantId,
+                tenantId: tenantId.tenantId,
             },
             refetchQueries: ["GetTenants"],
             onCompleted: () => {
@@ -102,7 +104,7 @@ function UpdateTenantModal(tenantId: UpdateTenantModalProps) {
                         !tenantData.contact ||
                         !tenantData.section
                     }
-                    onClick={handleAddTenant}
+                    onClick={handleUpdateTenant}
                     className={[
                         "w-full text-[17px] font-semibold text-white py-3 rounded-sm",
                         !tenantData.name ||
