@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreatePaymentDto {
+  amount: Float!
+  datePaid: DateTime!
+  isSettled: Boolean!
+}
+
 input CreatePropertieDto {
   address: String!
   name: String!
@@ -37,6 +43,7 @@ type LoginResponse {
 }
 
 type Mutation {
+  createPayment(createPaymentDto: CreatePaymentDto!, tenantId: Float!): Payment!
   createPropertie(propertieDto: CreatePropertieDto!, userId: Float!): Propertie!
   createTenant(TenantDto: CreateTenantDto!, propertyId: Float!): Tenant!
   deleteTenant(tenantId: Float!): Tenant!
@@ -44,7 +51,15 @@ type Mutation {
   logout: String!
   refreshToken: String!
   register(registerInput: RegisterDto!): RegisterResponse!
+  removePayment(id: Int!): Payment!
   updateTenant(UpdateTenantDto: CreateTenantDto!, tenantId: Float!): Tenant!
+}
+
+type Payment {
+  amount: Float!
+  datePaid: DateTime!
+  id: Int!
+  isSettled: Boolean!
 }
 
 type Propertie {
@@ -59,12 +74,14 @@ type Propertie {
 }
 
 type Query {
+  getPayments(tenantId: Float!): [Payment!]!
   getPropertie(id: Float!): Propertie!
   getProperties(userId: Float!): [Propertie!]!
   getPropertiesByname(name: String!): [Propertie!]!
   getTenants(propertyId: Float!): [Tenant!]!
   getUsers: [User!]!
   hello: String!
+  payment(id: Int!): Payment!
 }
 
 input RegisterDto {

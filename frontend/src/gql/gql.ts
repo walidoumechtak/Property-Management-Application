@@ -13,6 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n    mutation CreatePayment($datePaid: DateTime!, $amount: Float!, $isSettled: Boolean!, $tenantId: Float!) {\n        createPayment(createPaymentDto: {datePaid: $datePaid, amount: $amount, isSettled: $isSettled}, tenantId: $tenantId) {\n            datePaid\n            isSettled\n            amount\n        }\n    }\n": types.CreatePaymentDocument,
     "\n    mutation CreatePropertie($name: String!, $address: String!, $type: String!, $numberOfUnits: Float!, $rentalCost: Float!, $userId: Float!) {\n        createPropertie(propertieDto: {name: $name, address: $address, type: $type, numberOfUnits: $numberOfUnits, rentalCost: $rentalCost}, userId: $userId) {\n            id\n            name\n            address\n            type\n            numberOfUnits\n            rentalCost\n        }\n    }\n": types.CreatePropertieDocument,
     "\n    mutation CreateTenant($name: String!, $contact: String!, $section: String!, $propertyId: Float!) {\n        createTenant(TenantDto: {name: $name, contact: $contact, section: $section}, propertyId: $propertyId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n": types.CreateTenantDocument,
     "\n    mutation DeleteTenant($tenantId: Float!) {\n        deleteTenant(tenantId: $tenantId){\n            name\n        }\n    }\n": types.DeleteTenantDocument,
@@ -20,6 +21,7 @@ const documents = {
     "\n    mutation LogoutUser {\n        logout\n    }\n": types.LogoutUserDocument,
     "\n    mutation RegisterUser(\n        $email: String!\n        $password: String!\n        $fullName: String!\n        $confirmPassword: String!\n    ) {\n        register(registerInput: {\n            email: $email,\n            password: $password,\n            fullName: $fullName\n            confirmPassword: $confirmPassword,\n            })\n             {\n            user {\n                id\n                email\n                fullName\n            }\n        }\n    }\n": types.RegisterUserDocument,
     "\n    mutation UpdateTenant($name: String!, $contact: String!, $section: String!, $tenantId: Float!) {\n        updateTenant(UpdateTenantDto: {name: $name, contact: $contact, section: $section}, tenantId: $tenantId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n": types.UpdateTenantDocument,
+    "\n    query GetPayments($tenantId: Float!) {\n        getPayments(tenantId: $tenantId) {\n            id\n            datePaid\n            isSettled\n            amount\n        }\n    }\n": types.GetPaymentsDocument,
     "\n    query GetPropertie($id: Float!) {\n        getPropertie(id: $id) {\n            id\n            name\n            address\n            type\n            numberOfUnits\n            rentalCost\n        }\n    }\n": types.GetPropertieDocument,
     "\n    query GetProperties($userId: Float!) {\n        getProperties(userId: $userId) {\n            id\n            name\n            address\n            type\n            numberOfUnits\n            rentalCost\n            createdAt\n            updatedAt\n        }\n    }\n": types.GetPropertiesDocument,
     "\n    query GetPropertiesByName($name: String!) {\n        getPropertiesByname(name: $name) {\n            id\n            name\n            address\n            type\n            numberOfUnits\n            rentalCost\n        }\n    }\n": types.GetPropertiesByNameDocument,
@@ -41,6 +43,10 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation CreatePayment($datePaid: DateTime!, $amount: Float!, $isSettled: Boolean!, $tenantId: Float!) {\n        createPayment(createPaymentDto: {datePaid: $datePaid, amount: $amount, isSettled: $isSettled}, tenantId: $tenantId) {\n            datePaid\n            isSettled\n            amount\n        }\n    }\n"): (typeof documents)["\n    mutation CreatePayment($datePaid: DateTime!, $amount: Float!, $isSettled: Boolean!, $tenantId: Float!) {\n        createPayment(createPaymentDto: {datePaid: $datePaid, amount: $amount, isSettled: $isSettled}, tenantId: $tenantId) {\n            datePaid\n            isSettled\n            amount\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -69,6 +75,10 @@ export function graphql(source: "\n    mutation RegisterUser(\n        $email: S
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation UpdateTenant($name: String!, $contact: String!, $section: String!, $tenantId: Float!) {\n        updateTenant(UpdateTenantDto: {name: $name, contact: $contact, section: $section}, tenantId: $tenantId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n"): (typeof documents)["\n    mutation UpdateTenant($name: String!, $contact: String!, $section: String!, $tenantId: Float!) {\n        updateTenant(UpdateTenantDto: {name: $name, contact: $contact, section: $section}, tenantId: $tenantId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetPayments($tenantId: Float!) {\n        getPayments(tenantId: $tenantId) {\n            id\n            datePaid\n            isSettled\n            amount\n        }\n    }\n"): (typeof documents)["\n    query GetPayments($tenantId: Float!) {\n        getPayments(tenantId: $tenantId) {\n            id\n            datePaid\n            isSettled\n            amount\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

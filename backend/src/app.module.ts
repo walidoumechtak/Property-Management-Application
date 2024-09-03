@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PropertieModule } from './propertie/propertie.module';
 import { TenantModule } from './tenant/tenant.module';
+import { PaymentModule } from './payment/payment.module';
+
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { TenantModule } from './tenant/tenant.module';
     UserModule,
     PropertieModule,
     TenantModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

@@ -55,7 +55,7 @@ model Payment {
   id           Int      @id @default(autoincrement())
   amount       Float    // Payment amount
   datePaid     DateTime
-  isSettled    Boolean  // Indicates whether the payment has been settled
+  isSettled    Boolean @default(false)  // Indicates whether the payment has been settled
   tenantId     Int
   tenant       Tenant   @relation(fields: [tenantId], references: [id])
   createdAt    DateTime @default(now())
