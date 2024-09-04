@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import propertyLogo from '../assets/images/logo.png';
+import { GiHouseKeys } from "react-icons/gi";
 import {
     AiOutlineSearch,
 } from 'react-icons/ai'
@@ -115,7 +116,14 @@ function TopNav() {
                         </div>
                 )}
                 {/* i think i should check if the user.id === true here.?! */}
+                {/* ================================= The profile button section ================================= */}
                 <div className="flex items-center">
+                    <Link to={"/properties"} className="flex border border-orange-500 cursor-pointer rounded-sm p-1 items-center justify-center mr-6">
+                        <GiHouseKeys className="text-orange-500" size={25}/>
+                        <div className="font-semibold text-orange-500">
+                            Properties
+                        </div>
+                    </Link>
                     <div className="relative">
                         <button onClick={() => setShowMenu(!showMenu)} className="mt-1">
                             <img 

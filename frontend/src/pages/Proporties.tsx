@@ -44,13 +44,13 @@ function Proporties(){
                                 </button>
                             </div>
                             {/* <div className="flex justify-between mt-5 bg-red-200"> */}
-                            <div className="w-full mx-auto max-w-4xl max-h-[400px] overflow-auto p-2 mt-5  border border-gray-200 rounded-lg shadow-custom sm:p-8 ">
+                            <div className="w-full mx-auto max-w-4xl max-h-[400px] overflow-auto p-2 mt-5  border border-gray-200 shadow-md sm:p-8 ">
                                 <div className="flow-root">
-                                    <ul role="list" className="divide-y divide-gray-200">
+                                    <ul role="list">
                                 {
                                     data?.getProperties.length === 0 ? <div>No properties found</div> :
                                     data?.getProperties.map((propertie) => (
-                                        <li onClick={() => navigate(`/properties/${propertie.id}`)} key={propertie.id} className="py-3 sm:py-4 cursor-pointer">
+                                        <li onClick={() => navigate(`/properties/${propertie.id}`)} key={propertie.id} className="py-3 mb-3 sm:py-4 p-3 border cursor-pointer">
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0">
                                                 <img className="w-20 h-20 rounded-full" src="https://picsum.photos/200" alt="Neil image" />
