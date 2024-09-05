@@ -17,6 +17,7 @@ const documents = {
     "\n    mutation CreatePropertie($name: String!, $address: String!, $type: String!, $numberOfUnits: Float!, $rentalCost: Float!, $userId: Float!) {\n        createPropertie(propertieDto: {name: $name, address: $address, type: $type, numberOfUnits: $numberOfUnits, rentalCost: $rentalCost}, userId: $userId) {\n            id\n            name\n            address\n            type\n            numberOfUnits\n            rentalCost\n        }\n    }\n": types.CreatePropertieDocument,
     "\n    mutation CreateTenant($name: String!, $contact: String!, $section: String!, $propertyId: Float!) {\n        createTenant(TenantDto: {name: $name, contact: $contact, section: $section}, propertyId: $propertyId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n": types.CreateTenantDocument,
     "\n    mutation DeleteTenant($tenantId: Float!) {\n        deleteTenant(tenantId: $tenantId){\n            name\n        }\n    }\n": types.DeleteTenantDocument,
+    "\n    mutation DeleteAccount($userId: Float!) {\n        deleteAccount(userId: $userId)\n    }\n": types.DeleteAccountDocument,
     "\n    mutation LoginUser($email: String!, $password: String!) {\n        login(loginInput: {email: $email, password: $password}) {\n            user {\n                id\n                email\n                fullName\n            }\n        }\n    }   \n": types.LoginUserDocument,
     "\n    mutation LogoutUser {\n        logout\n    }\n": types.LogoutUserDocument,
     "\n    mutation RegisterUser(\n        $email: String!\n        $password: String!\n        $fullName: String!\n        $confirmPassword: String!\n    ) {\n        register(registerInput: {\n            email: $email,\n            password: $password,\n            fullName: $fullName\n            confirmPassword: $confirmPassword,\n            })\n             {\n            user {\n                id\n                email\n                fullName\n            }\n        }\n    }\n": types.RegisterUserDocument,
@@ -60,6 +61,10 @@ export function graphql(source: "\n    mutation CreateTenant($name: String!, $co
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation DeleteTenant($tenantId: Float!) {\n        deleteTenant(tenantId: $tenantId){\n            name\n        }\n    }\n"): (typeof documents)["\n    mutation DeleteTenant($tenantId: Float!) {\n        deleteTenant(tenantId: $tenantId){\n            name\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation DeleteAccount($userId: Float!) {\n        deleteAccount(userId: $userId)\n    }\n"): (typeof documents)["\n    mutation DeleteAccount($userId: Float!) {\n        deleteAccount(userId: $userId)\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

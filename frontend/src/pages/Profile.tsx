@@ -1,12 +1,30 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import MainLayout from "../layouts/MainLayout";
 import { useUserStore } from "../stores/userStore";
-import { UserWithToalsQuery } from "../gql/graphql";
+import { DeleteAccountMutation, UserWithToalsQuery } from "../gql/graphql";
 import { GET_USER_TOTAL_INFO } from "../graphql/queries/GetUserTotalInfo";
 import { useEffect } from "react";
+import { DELETE_ACCOUNT } from "../graphql/mutations/DeleteUser";
 
 function Profile() {
     const user = useUserStore();
+    const setUser = useUserStore((state) => state.setUser);
+    const [deleteAccount] = useMutation<DeleteAccountMutation>(DELETE_ACCOUNT, {
+        variables: {
+            userId: user.id
+        },
+        onCompleted: () => {
+            setUser(
+                {
+                    id: undefined,
+                    fullName: "",
+                    email: "",
+                    image: "",
+                }
+            );
+            window.location.reload();
+        }
+    });
     const {data, error, loading} = useQuery<UserWithToalsQuery>(GET_USER_TOTAL_INFO, {
         variables: {
             userId: user.id
@@ -19,7 +37,8 @@ function Profile() {
     return (
         <MainLayout>
             <div className="w-full h-[100vh] flex justify-center items-center">
-                <div className="flex p-10 max-w-[1200px] max-h-[700px] rounded-lg shadow-custom bg-gray-50">
+                <div className="flex flex-col p-10 max-w-[1200px] max-h-[700px] rounded-lg shadow-custom bg-gray-50">
+                <div className="flex mb-6">
                     {/* ------ image section ------ */}
                     <div className="bg-white flex p-6 flex-col justify-center items-center w-[300px] shadow-custom">
                         <img src="https://picsum.photos/200" alt="profile pictures" className="rounded-full" width={"100px"} height={"100px"}/>
@@ -68,6 +87,15 @@ function Profile() {
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    {/* ============= */}
+                    </div>
+                    <div className="flex items-center justify-center">
+                        <button
+                            onClick={() => deleteAccount()}
+                            className="bg-red-500 border border-red-500 hover:bg-gray-50 hover:text-red-500 text-white font-bold p-2 rounded">
+                            Delete Account
+                        </button>
                     </div>
                 </div>
             </div>

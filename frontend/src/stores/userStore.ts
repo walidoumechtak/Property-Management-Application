@@ -31,7 +31,6 @@ export const useUserStore = create<User & UserActions>()(
                             id: undefined,
                             fullName: "",
                             email: "",
-                            bio: "",
                             image: "",
                         }),
                 }
