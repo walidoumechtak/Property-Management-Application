@@ -56,8 +56,8 @@ function TopNav() {
                     <Link to="/">
                     <img
                         src={propertyLogo}
-                        width={"100"}
-                        height={"100"}
+                        width={"140"}
+                        // height={"140"}
                         alt="logo"
                     />
                     </Link>
@@ -118,9 +118,9 @@ function TopNav() {
                 {/* i think i should check if the user.id === true here.?! */}
                 {/* ================================= The profile button section ================================= */}
                 <div className="flex items-center">
-                    <Link to={"/properties"} className="flex border border-orange-500 cursor-pointer rounded-sm p-1 items-center justify-center mr-6">
-                        <GiHouseKeys className="text-orange-500" size={25}/>
-                        <div className="font-semibold text-orange-500">
+                    <Link to={"/properties"} className="flex text-orange-500 hover:text-white border hover:bg-orange-500 border-orange-500 cursor-pointer rounded-sm p-1 items-center justify-center mr-6">
+                        <GiHouseKeys size={25}/>
+                        <div className="font-semibold ">
                             Properties
                         </div>
                     </Link>

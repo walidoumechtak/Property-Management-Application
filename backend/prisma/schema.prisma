@@ -36,7 +36,7 @@ model Property {
   updatedAt    DateTime @updatedAt
   tenants      Tenant[] // Relationship to Tenant
   userId       Int
-  user         User    @relation(fields: [userId], references: [id])
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Tenant {
@@ -45,7 +45,7 @@ model Tenant {
   contact      String
   section      String   // Section or unit the tenant occupies
   propertyId   Int
-  property     Property @relation(fields: [propertyId], references: [id])
+  property     Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   payments     Payment[] // Relationship to Payment
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -57,7 +57,7 @@ model Payment {
   datePaid     DateTime
   isSettled    Boolean @default(false)  // Indicates whether the payment has been settled
   tenantId     Int
-  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

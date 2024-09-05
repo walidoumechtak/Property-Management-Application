@@ -52,6 +52,7 @@ export class TenantService {
     }
 
     async deleteTenant(tenantId: number) {
+        console.log("----- Tenant ID: --->", tenantId);
         const deletedTenant = await this.prisma.tenant.delete({
             where: {
                 id: tenantId,

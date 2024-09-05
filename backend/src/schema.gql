@@ -82,6 +82,7 @@ type Query {
   getUsers: [User!]!
   hello: String!
   payment(id: Int!): Payment!
+  userWithToals(userId: Float!): UserStatistics!
 }
 
 input RegisterDto {
@@ -114,4 +115,9 @@ type User {
   image: String
   password: String!
   updatedAt: DateTime!
+}
+
+type UserStatistics {
+  totalProperties: Float!
+  totalTenants: Float!
 }

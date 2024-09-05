@@ -1,6 +1,15 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
+export class UserStatistics{
+    @Field()
+    totalProperties: number;
+
+    @Field()
+    totalTenants: number;
+}
+
+@ObjectType()
 export class User{
     @Field()
     id?: number;
