@@ -94,4 +94,12 @@ export class UserResolver {
     ) {
         return this.userService.userWithToals(userId);
     }
+
+    @Mutation(() => String)
+    async deleteAccount(
+        @Args('userId') userId: number,
+    ){
+        console.log("userid of user to delete: ", userId);
+        return this.userService.deleteAccount(userId);
+    }
 }

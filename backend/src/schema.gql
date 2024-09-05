@@ -46,6 +46,7 @@ type Mutation {
   createPayment(createPaymentDto: CreatePaymentDto!, tenantId: Float!): Payment!
   createPropertie(propertieDto: CreatePropertieDto!, userId: Float!): Propertie!
   createTenant(TenantDto: CreateTenantDto!, propertyId: Float!): Tenant!
+  deleteAccount(userId: Float!): String!
   deleteTenant(tenantId: Float!): Tenant!
   login(loginInput: LoginDto!): LoginResponse!
   logout: String!

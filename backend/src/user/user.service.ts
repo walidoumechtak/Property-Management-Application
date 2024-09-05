@@ -43,4 +43,14 @@ export class UserService {
       console.log("-------result: ", result);
       return result;
     }
+
+    async deleteAccount(userId: number) {
+        this.prisma.user.delete({
+            where: {
+                id: userId,
+            }
+        });
+
+        return "User deleted successfully";
+    }
 }
