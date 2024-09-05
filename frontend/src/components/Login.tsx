@@ -37,7 +37,7 @@ function Login() {
             response && response.data && setUser(response.data.login.user);
             setLoginIsOpen(false);
             setInvalidCredentials("");
-        }catch(_) {
+        }catch(err) {
             if (error && error.graphQLErrors[0].extensions?.invalidCredentials)
                 setInvalidCredentials(error.graphQLErrors[0].extensions.invalidCredentials);
             else if (error)

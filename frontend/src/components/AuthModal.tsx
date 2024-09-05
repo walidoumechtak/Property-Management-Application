@@ -19,13 +19,13 @@ function AuthModal() {
             <div
                 className="bg-white relative w-full max-w-[480px] h-[70%] p-4 rounded-lg"
             >
-                <div
+                {/* <div
                     className="w-full flex justify-end"
                 >
                     <button onClick={() => {setLoginIsOpen(!isLoginOpen)}}>
                         <ImCross size={"17"} color="balck"/>
                     </button>
-                </div>
+                </div> */}
                 {(isRegistered || isJustRegistred)  ? <Login /> : <Register />}
                 <div className="absolute left-0 bottom-0 border-t w-full
                     py-5 flex justify-center items-center "
