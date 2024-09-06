@@ -53,7 +53,7 @@ function Proporties(){
                                         <li onClick={() => navigate(`/properties/${propertie.id}`)} key={propertie.id} className="py-3 mb-3 sm:py-4 p-3 border cursor-pointer">
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0">
-                                                <img className="w-20 h-20 rounded-full" src="https://picsum.photos/200" alt="Neil image" />
+                                                <img className="w-20 h-20 rounded-full" src="https://picsum.photos/200/300" alt="Neil image" />
                                             </div>
                                             <div className="flex-1 min-w-0 ms-4">
                                                 <p className="text-sm font-medium text-gray-900 truncate ">

@@ -16,20 +16,20 @@ import {
     ) {}
   
     async canActivate(context: ExecutionContext): Promise<boolean> {
-      const gqlCtx = context.getArgByIndex(2);
-      const request: Request = gqlCtx.req;
+      const gqlCtx = context.getArgByIndex(2); // Get the GraphQL context
+      const request: Request = gqlCtx.req; // Get the request object from the context
   
-      const token = this.extractTokenFromCookie(request);
+      const token = this.extractTokenFromCookie(request); // Extract token from cookie
       if (!token) {
         throw new UnauthorizedException();
       }
   
       try {
-        const payload = await this.jwtService.verifyAsync(token, {
+        const payload = await this.jwtService.verifyAsync(token, { // Verify token and get payload
           secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
         });
         console.log('PAYLOAD!', payload);
-        request['user'] = payload;
+        request['user'] = payload; // Attach the user object to the request object
       } catch (error) {
         console.log(error);
         // If token is expired, we could also check if there's a refresh token
