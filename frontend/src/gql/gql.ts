@@ -23,6 +23,7 @@ const documents = {
     "\n    mutation RegisterUser(\n        $email: String!\n        $password: String!\n        $fullName: String!\n        $confirmPassword: String!\n    ) {\n        register(registerInput: {\n            email: $email,\n            password: $password,\n            fullName: $fullName\n            confirmPassword: $confirmPassword,\n            })\n             {\n            user {\n                id\n                email\n                fullName\n            }\n        }\n    }\n": types.RegisterUserDocument,
     "\n    mutation UpdateTenant($name: String!, $contact: String!, $section: String!, $tenantId: Float!) {\n        updateTenant(UpdateTenantDto: {name: $name, contact: $contact, section: $section}, tenantId: $tenantId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n": types.UpdateTenantDocument,
     "\n    query GetPayments($tenantId: Float!) {\n        getPayments(tenantId: $tenantId) {\n            id\n            datePaid\n            isSettled\n            amount\n        }\n    }\n": types.GetPaymentsDocument,
+    "\n    query GetSingleTenant($tenantId: Float!) {\n        getSingleTenant(tenantId: $tenantId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n": types.GetSingleTenantDocument,
     "\n    query UserWithToals($userId: Float!) {\n        userWithToals(userId: $userId) {\n            totalProperties\n            totalTenants\n        }\n    }\n": types.UserWithToalsDocument,
     "\n    query GetPropertie($id: Float!) {\n        getPropertie(id: $id) {\n            id\n            name\n            address\n            type\n            numberOfUnits\n            rentalCost\n        }\n    }\n": types.GetPropertieDocument,
     "\n    query GetProperties($userId: Float!) {\n        getProperties(userId: $userId) {\n            id\n            name\n            address\n            type\n            numberOfUnits\n            rentalCost\n            createdAt\n            updatedAt\n        }\n    }\n": types.GetPropertiesDocument,
@@ -85,6 +86,10 @@ export function graphql(source: "\n    mutation UpdateTenant($name: String!, $co
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query GetPayments($tenantId: Float!) {\n        getPayments(tenantId: $tenantId) {\n            id\n            datePaid\n            isSettled\n            amount\n        }\n    }\n"): (typeof documents)["\n    query GetPayments($tenantId: Float!) {\n        getPayments(tenantId: $tenantId) {\n            id\n            datePaid\n            isSettled\n            amount\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetSingleTenant($tenantId: Float!) {\n        getSingleTenant(tenantId: $tenantId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n"): (typeof documents)["\n    query GetSingleTenant($tenantId: Float!) {\n        getSingleTenant(tenantId: $tenantId) {\n            id\n            name\n            contact\n            section\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

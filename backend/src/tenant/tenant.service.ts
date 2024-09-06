@@ -61,4 +61,12 @@ export class TenantService {
         console.log("Deleted Tenant: --->", deletedTenant);
         return deletedTenant;
     }
+
+    async getSingleTenant(tenantId: number) {
+        return this.prisma.tenant.findUnique({
+            where: {
+                id: tenantId,
+            },
+        });
+    }
 }

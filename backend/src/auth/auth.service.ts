@@ -118,6 +118,7 @@ import {
       const user = await this.validateUser(loginDto);
   
       if (!user) {
+        // throw new UnauthorizedException('Invalid credentials');
         throw new Error('Invalid credentials'); // Provide a proper error response
       }
   

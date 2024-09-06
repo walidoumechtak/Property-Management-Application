@@ -79,6 +79,7 @@ type Query {
   getPropertie(id: Float!): Propertie!
   getProperties(userId: Float!): [Propertie!]!
   getPropertiesByname(name: String!): [Propertie!]!
+  getSingleTenant(tenantId: Float!): Tenant!
   getTenants(propertyId: Float!): [Tenant!]!
   getUsers: [User!]!
   hello: String!

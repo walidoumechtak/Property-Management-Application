@@ -39,4 +39,12 @@ export class TenantResolver {
     ) {
         return await this.tenantService.deleteTenant(tenantId);
     }
+
+    @Query(() => Tenant)
+    async getSingleTenant(
+        @Args('tenantId') tenantId: number,
+    ) {
+        console.log("get single tenant id: --->", tenantId);
+        return await this.tenantService.getSingleTenant(tenantId);
+    }
 }

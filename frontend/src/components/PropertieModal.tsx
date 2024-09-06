@@ -22,10 +22,6 @@ function PropertieModal() {
         rentalCost: 0
     });
 
-    document.addEventListener("keydown", (e) => {
-        console.log("key pressed: ", e.key);
-    });
-
     const user = useUserStore();
     const navigate = useNavigate();
 

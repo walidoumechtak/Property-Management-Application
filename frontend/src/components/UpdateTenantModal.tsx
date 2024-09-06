@@ -1,11 +1,12 @@
 import { useGeneralStore } from "../stores/generalStore";
 import { ImCross } from "react-icons/im";
 import Input from "./Inupt";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GraphQLErrorExtensions } from "graphql";
-import { UpdateTenantMutation } from "../gql/graphql";
-import { useMutation } from "@apollo/client";
+import { GetSingleTenantQuery, GetSingleTenantQueryVariables, UpdateTenantMutation } from "../gql/graphql";
+import { useMutation, useQuery } from "@apollo/client";
 import { UPDATE_TENANT } from "../graphql/mutations/UpdateTenant";
+import { GET_SINGL_TENANT } from "../graphql/queries/GetSinglTenant";
 
 interface UpdateTenantModalProps {
     tenantId: number;
@@ -15,13 +16,28 @@ function UpdateTenantModal(tenantId: UpdateTenantModalProps) {
     const setIsUpdateTenantModalOpen = useGeneralStore((state) => state.setIsUpdateTenantModalOpen);
     const isUpdateTenantModalOpen = useGeneralStore((state) => state.isUpdateTenantModalOpen);
     const [errors, setErrors] = useState<GraphQLErrorExtensions>({});
-    const [tenantData, setTenantData] = useState({
-        name: "",
-        contact: "",
-        section: ""
-    });
     const [updateTenant, {data, error, loading}] = useMutation<UpdateTenantMutation>(UPDATE_TENANT);
-  
+    const oldTenantData = useQuery<GetSingleTenantQuery, GetSingleTenantQueryVariables>(GET_SINGL_TENANT, {
+        variables: {
+            tenantId: tenantId.tenantId,
+        },
+    });
+    const extractedOldData = oldTenantData.data?.getSingleTenant;
+    const [tenantData, setTenantData] = useState({
+        name: extractedOldData?.name ? extractedOldData?.name : "",
+        contact: extractedOldData?.contact ? extractedOldData?.contact : "",
+        section: extractedOldData?.section ? extractedOldData?.section : "",   
+    });
+
+    useEffect(() => {
+        if (isUpdateTenantModalOpen) {
+            setTenantData({
+                name: extractedOldData?.name ? extractedOldData?.name : "",
+                contact: extractedOldData?.contact ? extractedOldData?.contact : "",
+                section: extractedOldData?.section ? extractedOldData?.section : "",
+            });
+        }
+    }, [isUpdateTenantModalOpen, extractedOldData]);
 
     // const propertyId = window.location.pathname.split("/").pop();
 
@@ -75,6 +91,7 @@ function UpdateTenantModal(tenantId: UpdateTenantModalProps) {
                     error={errors?.name as string}
                     onChange={(e) => setTenantData({...tenantData, name: e.target.value})}
                     autoFocus={false}
+                    value={tenantData.name}
                 />
             </div>
             <div className="px-6 pb-6">
@@ -85,6 +102,7 @@ function UpdateTenantModal(tenantId: UpdateTenantModalProps) {
                     error={errors?.contact as string}
                     onChange={(e) => setTenantData({...tenantData, contact: e.target.value})}
                     autoFocus={false}
+                    value={tenantData.contact}
                 />
             </div>
             <div className="px-6 pb-6">
@@ -95,6 +113,7 @@ function UpdateTenantModal(tenantId: UpdateTenantModalProps) {
                     error={errors?.section as string}
                     onChange={(e) => setTenantData({...tenantData, section: e.target.value})}
                     autoFocus={false}
+                    value={tenantData.section}
                 />
             </div>
             <div className="mx-6 mt-2">

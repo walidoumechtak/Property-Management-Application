@@ -148,6 +148,7 @@ export type Query = {
   getPropertie: Propertie;
   getProperties: Array<Propertie>;
   getPropertiesByname: Array<Propertie>;
+  getSingleTenant: Tenant;
   getTenants: Array<Tenant>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
@@ -173,6 +174,11 @@ export type QueryGetPropertiesArgs = {
 
 export type QueryGetPropertiesBynameArgs = {
   name: Scalars['String']['input'];
+};
+
+
+export type QueryGetSingleTenantArgs = {
+  tenantId: Scalars['Float']['input'];
 };
 
 
@@ -317,6 +323,13 @@ export type GetPaymentsQueryVariables = Exact<{
 
 export type GetPaymentsQuery = { __typename?: 'Query', getPayments: Array<{ __typename?: 'Payment', id: number, datePaid: any, isSettled: boolean, amount: number }> };
 
+export type GetSingleTenantQueryVariables = Exact<{
+  tenantId: Scalars['Float']['input'];
+}>;
+
+
+export type GetSingleTenantQuery = { __typename?: 'Query', getSingleTenant: { __typename?: 'Tenant', id: number, name: string, contact: string, section: string } };
+
 export type UserWithToalsQueryVariables = Exact<{
   userId: Scalars['Float']['input'];
 }>;
@@ -368,6 +381,7 @@ export const LogoutUserDocument = {"kind":"Document","definitions":[{"kind":"Ope
 export const RegisterUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fullName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"registerInput"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"fullName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fullName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"confirmPassword"},"value":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}}]}}]}}]}}]} as unknown as DocumentNode<RegisterUserMutation, RegisterUserMutationVariables>;
 export const UpdateTenantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTenant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"contact"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"section"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"UpdateTenantDto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"contact"},"value":{"kind":"Variable","name":{"kind":"Name","value":"contact"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"section"},"value":{"kind":"Variable","name":{"kind":"Name","value":"section"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"tenantId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contact"}},{"kind":"Field","name":{"kind":"Name","value":"section"}}]}}]}}]} as unknown as DocumentNode<UpdateTenantMutation, UpdateTenantMutationVariables>;
 export const GetPaymentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPayments"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getPayments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"tenantId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"datePaid"}},{"kind":"Field","name":{"kind":"Name","value":"isSettled"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]} as unknown as DocumentNode<GetPaymentsQuery, GetPaymentsQueryVariables>;
+export const GetSingleTenantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSingleTenant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getSingleTenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"tenantId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tenantId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"contact"}},{"kind":"Field","name":{"kind":"Name","value":"section"}}]}}]}}]} as unknown as DocumentNode<GetSingleTenantQuery, GetSingleTenantQueryVariables>;
 export const UserWithToalsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserWithToals"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userWithToals"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalProperties"}},{"kind":"Field","name":{"kind":"Name","value":"totalTenants"}}]}}]}}]} as unknown as DocumentNode<UserWithToalsQuery, UserWithToalsQueryVariables>;
 export const GetPropertieDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPropertie"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getPropertie"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}}]}}]}}]} as unknown as DocumentNode<GetPropertieQuery, GetPropertieQueryVariables>;
 export const GetPropertiesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProperties"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getProperties"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"numberOfUnits"}},{"kind":"Field","name":{"kind":"Name","value":"rentalCost"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetPropertiesQuery, GetPropertiesQueryVariables>;
@@ -512,6 +526,7 @@ export type Query = {
   getPropertie: Propertie;
   getProperties: Array<Propertie>;
   getPropertiesByname: Array<Propertie>;
+  getSingleTenant: Tenant;
   getTenants: Array<Tenant>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
@@ -537,6 +552,11 @@ export type QueryGetPropertiesArgs = {
 
 export type QueryGetPropertiesBynameArgs = {
   name: Scalars['String']['input'];
+};
+
+
+export type QueryGetSingleTenantArgs = {
+  tenantId: Scalars['Float']['input'];
 };
 
 
@@ -680,6 +700,13 @@ export type GetPaymentsQueryVariables = Exact<{
 
 
 export type GetPaymentsQuery = { __typename?: 'Query', getPayments: Array<{ __typename?: 'Payment', id: number, datePaid: any, isSettled: boolean, amount: number }> };
+
+export type GetSingleTenantQueryVariables = Exact<{
+  tenantId: Scalars['Float']['input'];
+}>;
+
+
+export type GetSingleTenantQuery = { __typename?: 'Query', getSingleTenant: { __typename?: 'Tenant', id: number, name: string, contact: string, section: string } };
 
 export type UserWithToalsQueryVariables = Exact<{
   userId: Scalars['Float']['input'];
@@ -1105,6 +1132,44 @@ export function useGetPaymentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetPaymentsQueryHookResult = ReturnType<typeof useGetPaymentsQuery>;
 export type GetPaymentsLazyQueryHookResult = ReturnType<typeof useGetPaymentsLazyQuery>;
 export type GetPaymentsQueryResult = Apollo.QueryResult<GetPaymentsQuery, GetPaymentsQueryVariables>;
+export const GetSingleTenantDocument = gql`
+    query GetSingleTenant($tenantId: Float!) {
+  getSingleTenant(tenantId: $tenantId) {
+    id
+    name
+    contact
+    section
+  }
+}
+    `;
+
+/**
+ * __useGetSingleTenantQuery__
+ *
+ * To run a query within a React component, call `useGetSingleTenantQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSingleTenantQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSingleTenantQuery({
+ *   variables: {
+ *      tenantId: // value for 'tenantId'
+ *   },
+ * });
+ */
+export function useGetSingleTenantQuery(baseOptions: Apollo.QueryHookOptions<GetSingleTenantQuery, GetSingleTenantQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSingleTenantQuery, GetSingleTenantQueryVariables>(GetSingleTenantDocument, options);
+      }
+export function useGetSingleTenantLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSingleTenantQuery, GetSingleTenantQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSingleTenantQuery, GetSingleTenantQueryVariables>(GetSingleTenantDocument, options);
+        }
+export type GetSingleTenantQueryHookResult = ReturnType<typeof useGetSingleTenantQuery>;
+export type GetSingleTenantLazyQueryHookResult = ReturnType<typeof useGetSingleTenantLazyQuery>;
+export type GetSingleTenantQueryResult = Apollo.QueryResult<GetSingleTenantQuery, GetSingleTenantQueryVariables>;
 export const UserWithToalsDocument = gql`
     query UserWithToals($userId: Float!) {
   userWithToals(userId: $userId) {
